@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#f6f5f1" />
+<title>Arbin — Full-stack developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/base.css">
+<style>
+  /* ─── HERO ─── */
+  .hero{padding:140px 0 0}
+  @media(max-width:900px){.hero{padding:110px 0 0}}
+  @media(max-width:520px){.hero{padding:100px 0 0}}
+
+  .hero-inner{
+    display:grid;grid-template-columns:1.3fr 1fr;
+    gap:80px;align-items:center;
+  }
+  @media(max-width:900px){
+    .hero-inner{grid-template-columns:1fr;gap:48px}
+  }
+
+  .hero-left{display:flex;flex-direction:column;gap:28px;align-items:flex-start}
+  .hero h1{margin-top:8px}
+  .hero h1 .line{display:block}
+  .hero h1 .accent{color:var(--accent)}
+
+  .hero-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
+
+  /* photo card */
+  .photo-card{
+    position:relative;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:16px;
+    box-shadow:var(--shadow-md);
+    transition:transform .5s var(--ease);
+  }
+  .photo-card:hover{transform:rotate(-1.5deg) translateY(-4px)}
+  .photo-card .frame{
+    aspect-ratio:4/5;border-radius:14px;overflow:hidden;
+    background:linear-gradient(135deg,#efece4,#e0ddd4);
+    position:relative;
+  }
+  .photo-card .frame img{
+    width:100%;height:100%;object-fit:cover;
+    transition:transform .8s var(--ease);
+  }
+  .photo-card:hover .frame img{transform:scale(1.03)}
+  .photo-card .meta{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:14px 4px 4px;
+  }
+  .photo-card .meta .name{font-weight:600;font-size:15px;letter-spacing:-.02em}
+  .photo-card .meta .role{font-size:13px;color:var(--ink-3)}
+  .photo-card .badge{
+    position:absolute;top:-14px;right:24px;
+    background:var(--surface);border:1px solid var(--line);
+    padding:8px 14px;border-radius:var(--radius-pill);
+    font-size:13px;font-weight:500;
+    display:flex;align-items:center;gap:8px;
+    box-shadow:var(--shadow-sm);
+  }
+  .photo-card .badge .dot{
+    width:8px;height:8px;border-radius:50%;background:#16c47f;
+    box-shadow:0 0 0 3px rgba(22,196,127,.15);
+    animation:pulse 2s infinite;
+  }
+  @media(max-width:900px){
+    .photo-card{max-width:360px;margin:0 auto;width:100%}
+  }
+
+  /* ─── LOGO STRIP ─── */
+  .strip{
+    margin-top:100px;padding:32px 0;
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    overflow:hidden;position:relative;
+  }
+  .strip::before,.strip::after{
+    content:'';position:absolute;top:0;bottom:0;width:80px;z-index:1;pointer-events:none;
+  }
+  .strip::before{left:0;background:linear-gradient(90deg,var(--bg),transparent)}
+  .strip::after{right:0;background:linear-gradient(-90deg,var(--bg),transparent)}
+  .strip .track{
+    display:flex;gap:56px;white-space:nowrap;
+    animation:marquee 42s linear infinite;
+    font-size:14px;font-weight:500;
+    color:var(--ink-3);letter-spacing:-.01em;
+  }
+  .strip .track span{display:inline-flex;align-items:center;gap:56px}
+  .strip .track span::after{
+    content:'';width:4px;height:4px;border-radius:50%;background:var(--ink-3);opacity:.5;
+  }
+  @media(max-width:640px){.strip{margin-top:64px}.strip .track{gap:36px}.strip .track span{gap:36px}}
+
+  /* ─── SECTION HEAD ─── */
+  .head{margin-bottom:56px;display:flex;flex-direction:column;gap:16px;align-items:flex-start}
+  .head h2{max-width:16ch}
+  @media(max-width:640px){.head{margin-bottom:40px}}
+
+  /* ─── FEATURED WORK GRID ─── */
+  .work-grid{
+    display:grid;grid-template-columns:repeat(12,1fr);gap:20px;
+  }
+  .work-item{
+    grid-column:span 4;
+    background:var(--surface);border:1px solid var(--line);
+    border-radius:var(--radius);padding:24px;
+    display:flex;flex-direction:column;gap:20px;
+    transition:all .35s var(--ease);position:relative;overflow:hidden;
+    min-height:280px;
+  }
+  .work-item:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);border-color:var(--line-2)}
+  .work-item .top{display:flex;justify-content:space-between;align-items:flex-start}
+  .work-item .num{font-family:var(--mono);font-size:12px;color:var(--ink-3);letter-spacing:.04em}
+  .work-item .icon{
+    width:40px;height:40px;border-radius:12px;
+    background:var(--bg-2);display:flex;align-items:center;justify-content:center;
+    font-size:16px;color:var(--ink-2);transition:all .3s var(--ease);
+  }
+  .work-item:hover .icon{background:var(--accent);color:#fff;transform:rotate(-8deg)}
+  .work-item h3{margin-top:auto}
+  .work-item p{font-size:14px;line-height:1.55;color:var(--ink-2);margin-top:-8px}
+  .work-item .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto}
+  .work-item .tags span{
+    font-size:12px;font-weight:500;color:var(--ink-2);
+    padding:4px 10px;background:var(--bg-2);border-radius:var(--radius-pill);
+  }
+  @media(max-width:900px){
+    .work-grid{grid-template-columns:repeat(6,1fr)}
+    .work-item{grid-column:span 3}
+  }
+  @media(max-width:640px){
+    .work-grid{grid-template-columns:1fr;gap:14px}
+    .work-item{grid-column:span 1;min-height:auto}
+  }
+
+  /* ─── ABOUT STRIP ─── */
+  .about-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;
+  }
+  @media(max-width:900px){.about-grid{grid-template-columns:1fr;gap:40px}}
+  .about-grid .big{
+    font-size:clamp(24px,2.8vw,36px);font-weight:500;
+    letter-spacing:-.03em;line-height:1.25;color:var(--ink);
+  }
+  .about-grid .big .accent{font-style:italic;font-weight:400}
+  .about-grid p{font-size:16px;line-height:1.7;color:var(--ink-2);margin-bottom:16px}
+  .about-grid p strong{color:var(--ink);font-weight:600}
+
+  /* ─── CTA BAND ─── */
+  .cta-band{
+    background:var(--ink);color:var(--bg);
+    border-radius:32px;padding:72px 56px;
+    display:flex;justify-content:space-between;align-items:center;gap:40px;
+    margin-top:120px;position:relative;overflow:hidden;
+  }
+  .cta-band::before{
+    content:'';position:absolute;top:-50%;right:-10%;width:400px;height:400px;
+    background:radial-gradient(circle,rgba(255,77,26,.25),transparent 70%);
+    pointer-events:none;
+  }
+  .cta-band h2{color:var(--bg);max-width:14ch;position:relative}
+  .cta-band .btn{background:var(--bg);color:var(--ink);border-color:var(--bg)}
+  .cta-band .btn:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+  @media(max-width:900px){
+    .cta-band{padding:48px 32px;flex-direction:column;align-items:flex-start;gap:28px;margin-top:80px;border-radius:24px}
+  }
+  @media(max-width:520px){.cta-band{padding:40px 24px}}
+</style>
+</head>
+<body>
+
+<div id="pt" class="on"></div>
+
+<nav class="top">
+  <div class="inner">
+    <a class="brand" href="index.html">
+      <span class="mark"></span>
+      <span>Arbin</span>
+    </a>
+    <ul class="desktop">
+      <li><a class="lnk" href="index.html">Home</a></li>
+      <li><a class="lnk" href="work.html">Work</a></li>
+      <li><a class="lnk" href="about.html">About</a></li>
+      <li><a class="lnk" href="contact.html">Contact</a></li>
+    </ul>
+    <button class="menu-btn" aria-label="Menu"><span></span></button>
+  </div>
+</nav>
+<div class="mobile-menu">
+  <a href="index.html">Home</a>
+  <a href="work.html">Work</a>
+  <a href="about.html">About</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<main>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-inner">
+        <div class="hero-left">
+          <span class="eyebrow reveal">Available for work</span>
+          <h1 class="reveal">
+            <span class="line">Full-stack</span>
+            <span class="line">developer that</span>
+            <span class="line"><span class="accent">ships.</span></span>
+          </h1>
+          <p class="lede reveal">I design, build, and deploy web products end-to-end — from fast landing pages to full apps. Currently open to senior roles and select freelance.</p>
+          <div class="hero-cta reveal">
+            <a class="btn primary" href="work.html">See my work <span class="arr">→</span></a>
+            <a class="btn ghost" href="contact.html">Get in touch</a>
+          </div>
+        </div>
+        <div class="photo-card reveal">
+          <div class="badge"><span class="dot"></span> Online</div>
+          <div class="frame">
+            <img src="assets/img/photo.png" alt="Arbin" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#98989f;font-family:var(--mono);font-size:13px;background:linear-gradient(135deg,#efece4,#e0ddd4)\'>add photo.png</div>'" />
+          </div>
+          <div class="meta">
+            <span class="name">Arbin</span>
+            <span class="role">Full-stack dev</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- LOGO STRIP -->
+      <div class="strip reveal">
+        <div class="track">
+          <span>TypeScript</span><span>React</span><span>Next.js</span><span>Node.js</span><span>Python</span><span>Tailwind</span><span>Cloudflare</span><span>Firebase</span><span>Vercel</span><span>AI / LLMs</span>
+          <span>TypeScript</span><span>React</span><span>Next.js</span><span>Node.js</span><span>Python</span><span>Tailwind</span><span>Cloudflare</span><span>Firebase</span><span>Vercel</span><span>AI / LLMs</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED WORK -->
+  <section class="section">
+    <div class="wrap">
+      <div class="head">
+        <span class="eyebrow reveal">Selected work</span>
+        <h2 class="reveal">Three products, live right now.</h2>
+      </div>
+      <div class="work-grid">
+        <a class="work-item reveal" href="https://kishuu.pages.dev" target="_blank" rel="noopener">
+          <div class="top">
+            <span class="num">/ 01</span>
+            <span class="icon">↗</span>
+          </div>
+          <h3>Kishuu</h3>
+          <p>A focused web experience — clean layout, fast load, deployed on Cloudflare Pages.</p>
+          <div class="tags"><span>Web</span><span>UI/UX</span></div>
+        </a>
+        <a class="work-item reveal" href="https://streammovie.pages.dev" target="_blank" rel="noopener">
+          <div class="top">
+            <span class="num">/ 02</span>
+            <span class="icon">↗</span>
+          </div>
+          <h3>StreamMovie</h3>
+          <p>Movie discovery and streaming interface. Search, browse, filter — built for speed.</p>
+          <div class="tags"><span>React</span><span>API</span></div>
+        </a>
+        <a class="work-item reveal" href="https://aifail.pages.dev" target="_blank" rel="noopener">
+          <div class="top">
+            <span class="num">/ 03</span>
+            <span class="icon">↗</span>
+          </div>
+          <h3>AIFail</h3>
+          <p>A collection of AI mishaps. Exploring how models fail — and why that's worth documenting.</p>
+          <div class="tags"><span>AI</span><span>LLMs</span></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT STRIP -->
+  <section class="section" style="padding-top:0">
+    <div class="wrap">
+      <div class="about-grid">
+        <p class="big reveal">I build web products end-to-end. <span class="accent">No handoffs, no half-finished demos.</span></p>
+        <div class="reveal">
+          <p>I work across the stack — <strong>React, Next.js, TypeScript, Tailwind</strong> on the frontend, <strong>Node, Python, Firebase, Cloudflare</strong> on the back.</p>
+          <p>I care about the details people feel but don't see: spacing, motion, the weight of a font. <strong>Interfaces should disappear</strong>; the work should be what's left.</p>
+          <a class="btn ghost" href="about.html" style="margin-top:12px">More about me <span class="arr">→</span></a>
+        </div>
+      </div>
+
+      <div class="cta-band reveal">
+        <h2>Got something in mind? Let's build it.</h2>
+        <a class="btn" href="contact.html">Get in touch <span class="arr">→</span></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="inner">
+    <span class="copy">© 2025 Arbin</span>
+    <div class="links">
+      <a href="https://kishuu.pages.dev" target="_blank" rel="noopener">Kishuu</a>
+      <a href="https://streammovie.pages.dev" target="_blank" rel="noopener">StreamMovie</a>
+      <a href="https://aifail.pages.dev" target="_blank" rel="noopener">AIFail</a>
+    </div>
+  </div>
+</footer>
+
+<script type="module">
+  import "./assets/js/anim.js";
+  import { loadHero } from "./assets/js/data.js";
+  loadHero();
+</script>
+</body>
+</html>

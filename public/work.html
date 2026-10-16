@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Work — Arbin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300..900;1,300..900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/base.css">
+<style>
+  #work{padding:180px 0 80px}
+  .head{margin-bottom:88px}
+  .head h2{margin-top:22px;max-width:14ch}
+  .head .lede{margin-top:28px}
+
+  .proj-list{border-top:1px solid var(--rule)}
+  .proj{
+    display:grid;grid-template-columns:60px 1fr 240px 60px;
+    gap:40px;align-items:center;
+    padding:44px 0;border-bottom:1px solid var(--rule);
+    position:relative;transition:padding .35s var(--ease);
+    cursor:pointer;text-decoration:none;color:inherit;
+  }
+  .proj::before{
+    content:'';position:absolute;inset:0;background:var(--ink);
+    transform:scaleY(0);transform-origin:bottom;
+    transition:transform .45s var(--ease);z-index:-1;
+  }
+  .proj:hover::before{transform:scaleY(1);transform-origin:top}
+  .proj:hover{padding-left:24px;padding-right:24px;color:var(--paper)}
+  .proj:hover .p-num,.proj:hover .p-desc,.proj:hover .p-tags{color:rgba(241,237,228,.7)}
+  .proj:hover .p-arrow{background:var(--accent);border-color:var(--accent);color:var(--paper);transform:rotate(-45deg)}
+
+  .p-num{
+    font-family:var(--mono);font-size:12px;letter-spacing:.04em;
+    color:var(--ink-3);transition:color .4s;
+  }
+  .p-title{
+    font-size:clamp(28px,3.4vw,46px);font-weight:700;
+    letter-spacing:-.04em;line-height:1;margin-bottom:10px;
+  }
+  .p-desc{
+    font-size:15px;line-height:1.55;color:var(--ink-2);
+    max-width:52ch;transition:color .4s;
+  }
+  .p-meta{
+    display:flex;flex-direction:column;gap:6px;align-items:flex-end;
+    text-align:right;
+  }
+  .p-tags{
+    display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;
+    transition:color .4s;
+  }
+  .p-tags span{
+    font-family:var(--mono);font-size:11px;letter-spacing:.02em;
+    padding:4px 10px;border:1px solid currentColor;border-radius:100px;
+    color:var(--ink-2);
+  }
+  .p-url{
+    font-family:var(--mono);font-size:11px;letter-spacing:.02em;
+    color:var(--ink-3);margin-top:10px;
+  }
+  .p-arrow{
+    width:56px;height:56px;border-radius:50%;border:1px solid var(--ink);
+    display:flex;align-items:center;justify-content:center;
+    font-size:18px;transition:all .4s var(--ease);
+    justify-self:end;
+  }
+
+  @media(max-width:900px){
+    .proj{grid-template-columns:40px 1fr 60px;gap:20px;padding:32px 0}
+    .p-meta{display:none}
+    .proj:hover{padding-left:12px;padding-right:12px}
+    #work{padding:140px 0 60px}
+    .head{margin-bottom:56px}
+  }
+</style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+<div id="cursor"></div>
+<div id="pt" class="on"></div>
+
+<nav class="top">
+  <div class="brand">Arbin<span>.</span></div>
+  <ul>
+    <li><a class="lnk" href="index.html">/home</a></li>
+    <li><a class="lnk" href="about.html">/about</a></li>
+    <li><a class="lnk" href="work.html">/work</a></li>
+    <li><a class="lnk" href="contact.html">/contact</a></li>
+  </ul>
+</nav>
+
+<main>
+  <section class="wrap" id="work">
+    <div class="head">
+      <div class="eyebrow reveal">02 / selected work</div>
+      <h2 class="reveal">Things I've <span class="serif">shipped.</span></h2>
+      <p class="lede reveal">Live products, running right now. Click any to open.</p>
+    </div>
+
+    <div class="proj-list" data-projects-grid>
+
+      <a class="proj reveal" href="https://kishuu.pages.dev" target="_blank" rel="noopener">
+        <div class="p-num">/ 01</div>
+        <div>
+          <div class="p-title">Kishuu</div>
+          <p class="p-desc">A focused web experience — clean layout, fast load, built and deployed on Cloudflare Pages. Designed end to end.</p>
+        </div>
+        <div class="p-meta">
+          <div class="p-tags"><span>Web</span><span>UI/UX</span></div>
+          <div class="p-url">kishuu.pages.dev</div>
+        </div>
+        <div class="p-arrow">↗</div>
+      </a>
+
+      <a class="proj reveal" href="https://streammovie.pages.dev" target="_blank" rel="noopener">
+        <div class="p-num">/ 02</div>
+        <div>
+          <div class="p-title">StreamMovie</div>
+          <p class="p-desc">A movie discovery and streaming interface. Search, browse, filter — with a media-first layout built for speed.</p>
+        </div>
+        <div class="p-meta">
+          <div class="p-tags"><span>React</span><span>API</span></div>
+          <div class="p-url">streammovie.pages.dev</div>
+        </div>
+        <div class="p-arrow">↗</div>
+      </a>
+
+      <a class="proj reveal" href="https://aifail.pages.dev" target="_blank" rel="noopener">
+        <div class="p-num">/ 03</div>
+        <div>
+          <div class="p-title">AIFail</div>
+          <p class="p-desc">A collection of AI mishaps and experiments. Built to explore how models fail — and why that's funny, useful, worth documenting.</p>
+        </div>
+        <div class="p-meta">
+          <div class="p-tags"><span>AI</span><span>LLMs</span></div>
+          <div class="p-url">aifail.pages.dev</div>
+        </div>
+        <div class="p-arrow">↗</div>
+      </a>
+
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span>© 2025 Arbin</span>
+  <span>Work</span>
+</footer>
+
+<script type="module">
+  import "./assets/js/bg.js";
+  import "./assets/js/anim.js";
+  import { loadProjects } from "./assets/js/data.js";
+  loadProjects("[data-projects-grid]");
+</script>
+</body>
+</html>

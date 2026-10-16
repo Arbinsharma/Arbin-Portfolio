@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#f6f5f1" />
+<title>About — Arbin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/base.css">
+<style>
+  .page-head{padding:140px 0 0}
+  @media(max-width:900px){.page-head{padding:110px 0 0}}
+  .page-head .stack{display:flex;flex-direction:column;gap:20px;align-items:flex-start;margin-bottom:80px}
+  .page-head h1{max-width:16ch}
+
+  .bio-grid{
+    display:grid;grid-template-columns:1.4fr 1fr;gap:80px;align-items:start;
+  }
+  @media(max-width:900px){.bio-grid{grid-template-columns:1fr;gap:48px}}
+  .bio-grid p{font-size:17px;line-height:1.75;color:var(--ink-2);margin-bottom:20px;max-width:60ch}
+  .bio-grid p strong{color:var(--ink);font-weight:600}
+  .bio-grid p:first-child::first-letter{
+    font-size:3.2em;font-weight:600;line-height:.9;
+    float:left;margin:6px 12px 0 0;color:var(--ink);
+    letter-spacing:-.05em;
+  }
+
+  .side{display:flex;flex-direction:column;gap:40px}
+  .side-block h4{
+    font-family:var(--mono);font-size:12px;font-weight:500;
+    letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);
+    margin-bottom:16px;
+  }
+  .side-block ul{list-style:none;display:flex;flex-direction:column;gap:0}
+  .side-block li{
+    display:flex;justify-content:space-between;align-items:baseline;
+    padding:14px 0;border-bottom:1px solid var(--line);
+    font-size:15px;color:var(--ink);
+  }
+  .side-block li:last-child{border-bottom:none}
+  .side-block li span:last-child{font-size:13px;color:var(--ink-3)}
+
+  .stats{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:12px;
+  }
+  .stat{
+    background:var(--surface);border:1px solid var(--line);
+    border-radius:var(--radius);padding:20px;
+    transition:all .3s var(--ease);
+  }
+  .stat:hover{transform:translateY(-2px);box-shadow:var(--shadow-sm)}
+  .stat .num{font-size:32px;font-weight:600;letter-spacing:-.04em;line-height:1;color:var(--ink);margin-bottom:8px}
+  .stat .lbl{font-size:12px;color:var(--ink-3);font-weight:500}
+  @media(max-width:640px){.stats{grid-template-columns:1fr 1fr}}
+
+  .principles{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+    margin-top:80px;
+  }
+  @media(max-width:900px){.principles{grid-template-columns:1fr;gap:14px;margin-top:56px}}
+  .principle{
+    background:var(--surface);border:1px solid var(--line);
+    border-radius:var(--radius);padding:28px;
+    display:flex;flex-direction:column;gap:12px;
+    transition:all .3s var(--ease);
+  }
+  .principle:hover{transform:translateY(-3px);box-shadow:var(--shadow-md)}
+  .principle .n{
+    font-family:var(--mono);font-size:12px;color:var(--ink-3);
+    letter-spacing:.04em;
+  }
+  .principle h3{font-size:18px}
+  .principle p{font-size:14px;line-height:1.6;color:var(--ink-2)}
+</style>
+</head>
+<body>
+
+<div id="pt" class="on"></div>
+
+<nav class="top">
+  <div class="inner">
+    <a class="brand" href="index.html">
+      <span class="mark"></span>
+      <span>Arbin</span>
+    </a>
+    <ul class="desktop">
+      <li><a class="lnk" href="index.html">Home</a></li>
+      <li><a class="lnk" href="work.html">Work</a></li>
+      <li><a class="lnk" href="about.html">About</a></li>
+      <li><a class="lnk" href="contact.html">Contact</a></li>
+    </ul>
+    <button class="menu-btn" aria-label="Menu"><span></span></button>
+  </div>
+</nav>
+<div class="mobile-menu">
+  <a href="index.html">Home</a>
+  <a href="work.html">Work</a>
+  <a href="about.html">About</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<main>
+  <section class="page-head">
+    <div class="wrap">
+      <div class="stack">
+        <span class="eyebrow reveal">About</span>
+        <h1 class="reveal">A developer who ships.</h1>
+      </div>
+
+      <div class="bio-grid">
+        <div data-about-paragraphs>
+          <p class="reveal">I'm Arbin — a full-stack developer focused on <strong>web apps that solve real problems</strong>. I've shipped three live products and I'm still building: a media platform, a small focused web experience, and a project exploring how <strong>AI fails</strong>.</p>
+          <p class="reveal">I work across the stack. On the frontend that means <strong>React, Next.js, TypeScript, Tailwind</strong> — clean layouts, fast loads, and interaction that feels considered. On the backend: <strong>Node, Python, Firebase, Cloudflare Workers</strong>.</p>
+          <p class="reveal">I care about the details people feel but don't see — spacing, motion, the weight of a font. <strong>Interfaces should disappear</strong>; the work should be what's left.</p>
+        </div>
+
+        <div class="side">
+          <div class="stats">
+            <div class="stat reveal">
+              <div class="num">3</div>
+              <div class="lbl">Live apps</div>
+            </div>
+            <div class="stat reveal">
+              <div class="num">∞</div>
+              <div class="lbl">Coffee</div>
+            </div>
+            <div class="stat reveal">
+              <div class="num">24h</div>
+              <div class="lbl">Reply time</div>
+            </div>
+          </div>
+
+          <div class="side-block reveal" data-about-skills>
+            <h4>Toolkit</h4>
+            <ul>
+              <li><span>TypeScript</span><span>daily</span></li>
+              <li><span>React · Next.js</span><span>daily</span></li>
+              <li><span>Node.js</span><span>daily</span></li>
+              <li><span>Tailwind CSS</span><span>daily</span></li>
+              <li><span>Python</span><span>regular</span></li>
+              <li><span>Firebase</span><span>regular</span></li>
+              <li><span>Cloudflare</span><span>regular</span></li>
+              <li><span>AI · LLMs</span><span>exploring</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="principles">
+        <div class="principle reveal">
+          <span class="n">/ 01</span>
+          <h3>Ship, don't polish forever</h3>
+          <p>Real users beat perfect plans. I build fast, ship early, and iterate on what actually matters.</p>
+        </div>
+        <div class="principle reveal">
+          <span class="n">/ 02</span>
+          <h3>Design is part of the job</h3>
+          <p>Clean type, real spacing, thoughtful motion. Not decoration — the substance of how it feels.</p>
+        </div>
+        <div class="principle reveal">
+          <span class="n">/ 03</span>
+          <h3>Own the whole thing</h3>
+          <p>From first sketch to deploy and monitor. No handoffs, no "that's someone else's problem."</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <div class="wrap">
+      <div class="cta-band reveal">
+        <h2>Got something in mind? Let's build it.</h2>
+        <a class="btn" href="contact.html">Get in touch <span class="arr">→</span></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="inner">
+    <span class="copy">© 2025 Arbin</span>
+    <div class="links">
+      <a href="index.html">Home</a>
+      <a href="work.html">Work</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<script type="module">
+  import "./assets/js/anim.js";
+  import { loadAbout } from "./assets/js/data.js";
+  loadAbout();
+</script>
+</body>
+</html>
