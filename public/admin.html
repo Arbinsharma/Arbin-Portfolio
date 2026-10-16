@@ -1284,8 +1284,23 @@ function resizeImage(file, maxW, quality) {
 }
 
 /* ───── BOOT ───── */
+async function seedDefaultsIfEmpty() {
+  try {
+    const snap = await getDocs(collection(db, "projects"));
+    if (!snap.empty) return;
+    const defaults = [
+      { title: "Kishuu", description: "A focused web experience — clean layout, fast load, deployed on Cloudflare Pages.", tags: ["Web","UI/UX"], link: "https://kishuu.pages.dev", year: "2025", imageUrl: "", featured: false, order: 0 },
+      { title: "StreamMovie", description: "Movie discovery and streaming interface. Search, browse, filter — built for speed.", tags: ["React","API"], link: "https://streammovie.pages.dev", year: "2025", imageUrl: "", featured: false, order: 1 },
+      { title: "AIFail", description: "A collection of AI mishaps. Exploring how models fail — and why that's worth documenting.", tags: ["AI","LLMs"], link: "https://aifail.pages.dev", year: "2025", imageUrl: "", featured: false, order: 2 }
+    ];
+    for (const p of defaults) await addDoc(collection(db, "projects"), p);
+    toast("seeded 3 default projects");
+  } catch(e) { console.warn("seed skipped:", e.message); }
+}
+
 async function boot() {
   try {
+    await seedDefaultsIfEmpty();
     await Promise.all([loadTheme(), loadSections(), loadHero(), loadHome(), loadAbout(), loadProjects(), loadContact(), loadFooter(), loadCss()]);
   } catch (e) {
     console.error(e);
