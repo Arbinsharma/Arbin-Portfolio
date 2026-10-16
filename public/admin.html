@@ -3,165 +3,549 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Admin — Your Name</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<title>Admin — Arbin</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#07080d;--fg:#eef0f6;--dim:#8a90a6;--line:rgba(255,255,255,.08);
-  --card:rgba(255,255,255,.03);--a1:#5eead4;--a2:#a78bfa;--danger:#f87171;
-  --ease:cubic-bezier(.22,1,.36,1);
+  --bg:#08090c;
+  --bg-2:#0e1015;
+  --surface:#13161d;
+  --surface-2:#1a1e27;
+  --surface-3:#222732;
+  --ink:#e8ecf4;
+  --ink-2:#8891a4;
+  --ink-3:#565e70;
+  --line:#1e222c;
+  --line-2:#262b37;
+  --cyan:#22d3ee;
+  --cyan-2:#06b6d4;
+  --cyan-dim:rgba(34,211,238,.12);
+  --cyan-glow:rgba(34,211,238,.35);
+  --green:#10b981;
+  --danger:#f43f5e;
+  --r:12px;
+  --r-sm:8px;
+  --sans:'Inter',system-ui,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --ease:cubic-bezier(.2,.8,.2,1);
 }
 html,body{height:100%}
-body{
-  background:var(--bg);color:var(--fg);font-family:'Inter',system-ui,sans-serif;
-  -webkit-font-smoothing:antialiased;overflow-x:hidden;
-  background-image:radial-gradient(circle at 15% 15%,rgba(94,234,212,.06),transparent 40%),
-                   radial-gradient(circle at 85% 85%,rgba(167,139,250,.06),transparent 40%);
-}
-button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
-input,textarea,select{font-family:inherit}
-::selection{background:var(--a1);color:#07080d}
-::-webkit-scrollbar{width:8px;height:8px}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden;font-size:14px;line-height:1.5}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;font-size:inherit}
+input,textarea,select{font-family:inherit;font-size:inherit}
+::selection{background:var(--cyan);color:#08090c}
+::-webkit-scrollbar{width:10px;height:10px}
 ::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:#1a1d29;border-radius:8px}
+::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:8px;border:2px solid var(--bg)}
+::-webkit-scrollbar-thumb:hover{background:#3a4152}
 
-#login{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:24px;transition:opacity .4s,visibility .4s}
-#login.hide{opacity:0;visibility:hidden;pointer-events:none}
-.login-box{width:100%;max-width:400px;padding:40px;border:1px solid var(--line);border-radius:24px;background:rgba(10,12,20,.7);backdrop-filter:blur(20px)}
-.login-box h1{font-size:26px;font-weight:700;letter-spacing:-.02em;margin-bottom:8px}
-.login-box .sub{color:var(--dim);font-size:13px;margin-bottom:32px;font-family:'JetBrains Mono',monospace}
+/* ════ LOADING SPLASH ════ */
+#splash{
+  position:fixed;inset:0;z-index:2000;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--bg);
+  transition:opacity .3s,visibility .3s;
+}
+#splash.hide{opacity:0;visibility:hidden;pointer-events:none}
+#splash .spin{
+  width:32px;height:32px;border-radius:50%;
+  border:2px solid var(--line-2);border-top-color:var(--cyan);
+  animation:spin .8s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ════ LOGIN ════ */
+#login{
+  position:fixed;inset:0;z-index:1500;
+  display:none;align-items:center;justify-content:center;padding:20px;
+  background:var(--bg);
+  background-image:
+    radial-gradient(circle 600px at 50% -10%, rgba(34,211,238,.08), transparent 60%),
+    radial-gradient(circle 400px at 90% 90%, rgba(34,211,238,.04), transparent 60%);
+  opacity:0;transition:opacity .3s;
+}
+#login.show{display:flex;opacity:1}
+#login.hide{display:none}
+.login-box{
+  width:100%;max-width:420px;padding:44px 40px;
+  border:1px solid var(--line-2);border-radius:16px;
+  background:var(--surface);
+  box-shadow:0 40px 120px rgba(0,0,0,.7),0 0 0 1px rgba(34,211,238,.05);
+  position:relative;
+  overflow:hidden;
+}
+.login-box::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--cyan),transparent);
+}
+.login-box .mark{
+  width:48px;height:48px;border-radius:12px;
+  background:linear-gradient(135deg,var(--cyan),var(--cyan-2));
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-weight:600;font-size:20px;color:#08090c;
+  margin-bottom:26px;
+  box-shadow:0 10px 30px rgba(34,211,238,.3);
+}
+.login-box h1{font-size:24px;font-weight:600;letter-spacing:-.025em;margin-bottom:6px}
+.login-box .sub{color:var(--ink-2);font-size:13px;margin-bottom:32px;font-family:var(--mono)}
 .field{margin-bottom:16px}
-.field label{display:block;font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--dim);letter-spacing:.1em;margin-bottom:8px;text-transform:uppercase}
-.inp{width:100%;padding:13px 16px;background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:12px;color:var(--fg);font-size:14px;transition:all .2s;outline:none}
-.inp:focus{border-color:var(--a1);background:rgba(94,234,212,.05);box-shadow:0 0 0 3px rgba(94,234,212,.1)}
-textarea.inp{resize:vertical;min-height:90px;line-height:1.6}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 22px;border-radius:12px;font-size:14px;font-weight:600;border:1px solid var(--line);color:var(--fg);background:rgba(255,255,255,.03);transition:all .2s;width:100%}
-.btn:hover{background:rgba(255,255,255,.07);transform:translateY(-1px)}
-.btn.primary{background:linear-gradient(120deg,var(--a1),var(--a2));color:#07080d;border:none}
-.btn.primary:hover{box-shadow:0 8px 30px rgba(94,234,212,.3)}
-.btn.sm{width:auto;padding:8px 14px;font-size:12px}
-.btn.danger{color:var(--danger);border-color:rgba(248,113,113,.3)}
-.btn.danger:hover{background:rgba(248,113,113,.1)}
-.err{color:var(--danger);font-size:13px;margin-top:14px;min-height:18px}
+.field label{
+  display:block;font-size:11px;font-family:var(--mono);color:var(--ink-3);
+  letter-spacing:.08em;margin-bottom:8px;text-transform:uppercase;font-weight:500;
+}
+.inp{
+  width:100%;padding:13px 16px;background:var(--bg-2);border:1px solid var(--line-2);
+  border-radius:var(--r-sm);color:var(--ink);font-size:14px;
+  transition:border-color .15s,box-shadow .15s;outline:none;
+}
+.inp:focus{border-color:var(--cyan);box-shadow:0 0 0 3px var(--cyan-dim)}
+textarea.inp{resize:vertical;min-height:90px;line-height:1.6;font-family:var(--sans)}
+select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%238891a4' stroke-width='1.5'%3E%3Cpath d='M1 1l5 5 5-5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:40px}
 
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:12px 20px;border-radius:var(--r-sm);font-size:14px;font-weight:500;
+  border:1px solid var(--line-2);color:var(--ink);background:var(--surface-2);
+  transition:all .15s;width:100%;letter-spacing:-.005em;white-space:nowrap;
+}
+.btn:hover{background:var(--surface-3);border-color:#333a48}
+.btn:active{transform:translateY(1px)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn.primary{
+  background:var(--cyan);color:#04161a;border:none;font-weight:600;
+}
+.btn.primary:hover{background:#3bdcf0;box-shadow:0 8px 24px rgba(34,211,238,.35)}
+.btn.sm{width:auto;padding:8px 14px;font-size:13px}
+.btn.danger{color:var(--danger);border-color:rgba(244,63,94,.25)}
+.btn.danger:hover{background:rgba(244,63,94,.1);border-color:rgba(244,63,94,.4)}
+.err{color:var(--danger);font-size:13px;margin-top:14px;min-height:18px;font-family:var(--mono)}
+
+/* ════ APP SHELL ════ */
 #app{display:none;min-height:100vh}
 #app.show{display:block}
-header.top{position:sticky;top:0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:16px 32px;backdrop-filter:blur(14px);background:rgba(7,8,13,.7);border-bottom:1px solid var(--line)}
-.brand{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.04em}
-.brand span{color:var(--a1)}
-.brand .tag{color:var(--dim);margin-left:8px;font-weight:400}
-.user{display:flex;align-items:center;gap:14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--dim)}
-.layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 57px)}
-aside{position:sticky;top:57px;height:calc(100vh - 57px);padding:24px 16px;border-right:1px solid var(--line);background:rgba(10,12,20,.3);display:flex;flex-direction:column;gap:4px}
-.tab{padding:11px 14px;border-radius:10px;font-size:13px;color:var(--dim);text-align:left;transition:all .2s;display:flex;align-items:center;gap:10px;font-weight:500}
-.tab:hover{background:rgba(255,255,255,.04);color:var(--fg)}
-.tab.active{background:rgba(94,234,212,.08);color:var(--a1)}
-.tab .ico{font-family:'JetBrains Mono',monospace;font-size:11px;opacity:.7}
-main.content{padding:40px 48px;max-width:960px}
-@media(max-width:820px){
-  .layout{grid-template-columns:1fr}
-  aside{position:static;height:auto;flex-direction:row;overflow-x:auto;border-right:none;border-bottom:1px solid var(--line)}
-  main.content{padding:24px}
-  header.top{padding:14px 20px}
+header.top{
+  position:sticky;top:0;z-index:100;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:14px 24px;backdrop-filter:blur(20px);
+  background:rgba(8,9,12,.82);border-bottom:1px solid var(--line);
 }
+.brand{font-family:var(--mono);font-size:13px;font-weight:500;display:flex;align-items:center;gap:10px;letter-spacing:.01em}
+.brand .pulse{
+  width:8px;height:8px;border-radius:50%;background:var(--cyan);
+  box-shadow:0 0 0 3px var(--cyan-dim),0 0 12px var(--cyan-glow);
+  animation:pulse 2s infinite;
+}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.brand span{color:var(--ink-2)}
+.user{display:flex;align-items:center;gap:14px;font-family:var(--mono);font-size:12px;color:var(--ink-3)}
+.user .u-mail{color:var(--ink-2)}
+@media(max-width:640px){header.top{padding:12px 16px}.user .u-mail{display:none}}
 
-.panel{display:none;animation:fadeUp .4s var(--ease)}
+.layout{display:grid;grid-template-columns:250px 1fr;min-height:calc(100vh - 57px)}
+aside{
+  position:sticky;top:57px;height:calc(100vh - 57px);
+  padding:20px 14px;border-right:1px solid var(--line);
+  background:var(--bg-2);display:flex;flex-direction:column;gap:4px;overflow-y:auto;
+}
+.aside-label{
+  font-family:var(--mono);font-size:10px;color:var(--ink-3);
+  letter-spacing:.14em;text-transform:uppercase;font-weight:600;
+  padding:16px 12px 8px;
+}
+.tab{
+  padding:10px 14px;border-radius:var(--r-sm);font-size:13px;color:var(--ink-2);
+  text-align:left;transition:all .15s;display:flex;align-items:center;gap:11px;font-weight:500;
+}
+.tab:hover{background:var(--surface);color:var(--ink)}
+.tab.active{background:var(--cyan-dim);color:var(--cyan)}
+.tab .ico{font-family:var(--mono);font-size:11px;opacity:.55;width:18px;font-weight:600;letter-spacing:.02em}
+.tab.active .ico{opacity:1}
+main.content{padding:40px 48px;max-width:1040px;width:100%;margin:0 auto}
+@media(max-width:900px){
+  .layout{grid-template-columns:1fr}
+  aside{position:sticky;top:57px;height:auto;flex-direction:row;overflow-x:auto;border-right:none;border-bottom:1px solid var(--line);padding:10px;gap:6px;z-index:50;background:rgba(14,16,21,.95);backdrop-filter:blur(20px)}
+  aside::-webkit-scrollbar{display:none}
+  .aside-label{display:none}
+  .tab{white-space:nowrap;flex-shrink:0;padding:8px 12px;font-size:12px}
+  .tab .ico{display:none}
+  main.content{padding:28px 20px}
+}
+@media(max-width:520px){main.content{padding:20px 16px}}
+
+.panel{display:none;animation:fadeUp .3s var(--ease)}
 .panel.active{display:block}
-@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-.phead{margin-bottom:32px}
-.phead h2{font-size:28px;font-weight:700;letter-spacing:-.02em;margin-bottom:6px}
-.phead p{color:var(--dim);font-size:14px}
-.form{display:flex;flex-direction:column;gap:18px}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-@media(max-width:640px){.row{grid-template-columns:1fr}}
-.actions{display:flex;gap:12px;margin-top:12px;align-items:center}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.phead{margin-bottom:36px;padding-bottom:24px;border-bottom:1px solid var(--line)}
+.phead h2{font-size:26px;font-weight:600;letter-spacing:-.025em;margin-bottom:6px}
+.phead p{color:var(--ink-2);font-size:13.5px;line-height:1.55;max-width:60ch}
+
+.form{display:flex;flex-direction:column;gap:24px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+@media(max-width:640px){.row,.row-3{grid-template-columns:1fr}}
+
+.actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .actions .btn{width:auto}
-.saved{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--a1);opacity:0;transition:opacity .3s}
+.saved{
+  font-family:var(--mono);font-size:12px;color:var(--cyan);opacity:0;
+  transition:opacity .25s;letter-spacing:.02em;
+}
 .saved.on{opacity:1}
+
+.group{
+  padding:24px;background:var(--surface);border:1px solid var(--line-2);
+  border-radius:var(--r);display:flex;flex-direction:column;gap:18px;
+}
+.group-title{
+  font-family:var(--mono);font-size:11px;font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);
+  display:flex;align-items:center;gap:12px;
+}
+.group-title::after{content:'';flex:1;height:1px;background:var(--line-2)}
 
 .list-row{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px}
 .list-row .inp{flex:1}
-.icon-btn{width:38px;height:38px;border-radius:10px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--dim);flex-shrink:0;transition:all .2s}
-.icon-btn:hover{color:var(--a1);border-color:var(--a1)}
-.icon-btn.danger:hover{color:var(--danger);border-color:var(--danger)}
-.mini-add{margin-top:6px;width:auto;padding:9px 16px;font-size:13px;background:none;border:1px dashed var(--line);color:var(--dim);border-radius:10px}
-.mini-add:hover{color:var(--a1);border-color:var(--a1);background:rgba(94,234,212,.04)}
+.icon-btn{
+  width:42px;height:42px;border-radius:var(--r-sm);border:1px solid var(--line-2);
+  display:flex;align-items:center;justify-content:center;color:var(--ink-3);
+  flex-shrink:0;transition:all .15s;font-size:18px;line-height:1;
+}
+.icon-btn:hover{color:var(--cyan);border-color:var(--cyan);background:var(--cyan-dim)}
+.icon-btn.danger:hover{color:var(--danger);border-color:var(--danger);background:rgba(244,63,94,.08)}
+.mini-add{
+  margin-top:10px;width:auto;padding:10px 16px;font-size:13px;
+  background:transparent;border:1px dashed var(--line-2);color:var(--ink-2);
+  border-radius:var(--r-sm);transition:all .15s;font-weight:500;
+}
+.mini-add:hover{color:var(--cyan);border-color:var(--cyan);background:var(--cyan-dim);border-style:solid}
 
-.project{border:1px solid var(--line);border-radius:16px;background:var(--card);margin-bottom:14px;overflow:hidden;transition:border-color .2s,background .2s}
-.project.open{border-color:rgba(94,234,212,.3);background:rgba(255,255,255,.04)}
-.project-head{display:flex;align-items:center;gap:14px;padding:16px 18px;cursor:pointer}
-.project-head .drag{cursor:grab;color:var(--dim);font-size:14px;user-select:none;padding:6px}
+/* toggles */
+.toggle-row{
+  display:flex;justify-content:space-between;align-items:center;gap:16px;
+  padding:16px 0;border-bottom:1px solid var(--line-2);
+}
+.toggle-row:last-child{border-bottom:none;padding-bottom:0}
+.toggle-row:first-child{padding-top:0}
+.t-info{display:flex;flex-direction:column;gap:3px}
+.t-label{font-size:14px;font-weight:500;color:var(--ink)}
+.t-desc{font-size:12.5px;color:var(--ink-3)}
+.toggle{
+  position:relative;width:44px;height:26px;border-radius:100px;background:var(--line-2);
+  cursor:pointer;transition:background .2s;flex-shrink:0;
+  border:1px solid transparent;
+}
+.toggle::after{
+  content:'';position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;
+  background:var(--ink-2);transition:transform .2s var(--ease),background .2s;
+}
+.toggle.on{background:var(--cyan);border-color:var(--cyan)}
+.toggle.on::after{transform:translateX(18px);background:#04161a}
+
+/* color rows */
+.color-row{display:grid;grid-template-columns:1fr 46px;gap:10px;align-items:center}
+.color-wrap{position:relative}
+.color-wrap::before{
+  content:'';position:absolute;left:12px;top:50%;transform:translateY(-50%);
+  width:24px;height:24px;border-radius:6px;
+  background:var(--swatch,var(--cyan));
+  border:1px solid rgba(255,255,255,.08);pointer-events:none;z-index:1;
+}
+.color-wrap .inp{padding-left:46px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.02em}
+.color-picker{
+  width:46px;height:46px;border-radius:var(--r-sm);border:1px solid var(--line-2);
+  padding:0;cursor:pointer;overflow:hidden;flex-shrink:0;background:transparent;
+}
+.color-picker::-webkit-color-swatch-wrapper{padding:2px}
+.color-picker::-webkit-color-swatch{border:none;border-radius:5px}
+
+/* swatch presets */
+.preset-row{display:flex;gap:10px;flex-wrap:wrap}
+.preset{
+  width:44px;height:44px;border-radius:10px;cursor:pointer;
+  border:2px solid transparent;transition:all .15s;
+  position:relative;
+}
+.preset:hover{transform:scale(1.06)}
+.preset.active{border-color:var(--ink);box-shadow:0 0 0 2px var(--bg),0 0 0 3px var(--cyan)}
+
+/* projects */
+.project{
+  border:1px solid var(--line-2);border-radius:var(--r);background:var(--surface);
+  margin-bottom:10px;overflow:hidden;transition:border-color .2s,background .2s;
+}
+.project.open{border-color:rgba(34,211,238,.35);background:var(--surface-2)}
+.project-head{display:flex;align-items:center;gap:14px;padding:16px 20px;cursor:pointer}
+.project-head .drag{
+  cursor:grab;color:var(--ink-3);font-size:14px;user-select:none;
+  padding:4px 6px;letter-spacing:-3px;border-radius:6px;transition:all .15s;
+}
+.project-head .drag:hover{color:var(--cyan);background:var(--cyan-dim)}
 .project-head .drag:active{cursor:grabbing}
-.project-head .pico{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,rgba(94,234,212,.15),rgba(167,139,250,.15));display:flex;align-items:center;justify-content:center;color:var(--a1);font-size:14px;font-family:'JetBrains Mono',monospace;flex-shrink:0}
-.project-head .ptitle{flex:1;font-weight:600;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.project-head .pchev{color:var(--dim);font-size:12px;transition:transform .25s}
-.project.open .pchev{transform:rotate(180deg)}
-.project-body{padding:0 18px 20px;display:none;border-top:1px solid var(--line);padding-top:18px}
+.project-head .pico{
+  width:36px;height:36px;border-radius:10px;
+  background:linear-gradient(135deg,rgba(34,211,238,.2),rgba(34,211,238,.06));
+  border:1px solid rgba(34,211,238,.2);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--cyan);font-size:12px;font-family:var(--mono);font-weight:600;flex-shrink:0;
+}
+.project-head .ptitle{flex:1;font-weight:500;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink)}
+.project-head .ptag{
+  font-family:var(--mono);font-size:10px;color:var(--cyan);
+  padding:3px 8px;border:1px solid rgba(34,211,238,.3);border-radius:100px;
+  letter-spacing:.06em;text-transform:uppercase;font-weight:500;
+}
+.project-head .pchev{color:var(--ink-3);font-size:12px;transition:transform .25s}
+.project.open .pchev{transform:rotate(180deg);color:var(--cyan)}
+.project-body{padding:0 20px 22px;display:none;border-top:1px solid var(--line-2);padding-top:22px}
 .project.open .project-body{display:block}
-.project.dragging{opacity:.4;border-style:dashed;border-color:var(--a1)}
-.project.drop-target{border-color:var(--a1);box-shadow:0 0 0 3px rgba(94,234,212,.15)}
+.project.dragging{opacity:.35;border-style:dashed;border-color:var(--cyan)}
+.project.drop-target{border-color:var(--cyan);box-shadow:0 0 0 3px var(--cyan-dim)}
 
-.drop{position:relative;padding:24px;border:1.5px dashed var(--line);border-radius:12px;text-align:center;color:var(--dim);font-size:13px;transition:all .2s;cursor:pointer;background:rgba(255,255,255,.01)}
-.drop:hover{border-color:var(--a1);color:var(--a1);background:rgba(94,234,212,.03)}
-.drop.over{border-color:var(--a1);background:rgba(94,234,212,.08);color:var(--a1)}
-.drop .big{font-size:20px;margin-bottom:6px;font-family:'JetBrains Mono',monospace}
-.img-preview{margin-top:12px;border-radius:12px;overflow:hidden;max-height:180px;background:#0a0d16;display:none}
+/* drop zone */
+.drop{
+  padding:32px 20px;border:1.5px dashed var(--line-2);border-radius:var(--r-sm);
+  text-align:center;color:var(--ink-2);font-size:13px;
+  transition:all .2s;cursor:pointer;background:var(--bg-2);
+}
+.drop:hover{border-color:var(--cyan);color:var(--cyan);background:var(--cyan-dim)}
+.drop.over{border-color:var(--cyan);background:var(--cyan-dim);color:var(--cyan);border-style:solid}
+.drop .big{font-size:22px;margin-bottom:8px;font-family:var(--mono);color:var(--cyan)}
+.img-preview{
+  margin-top:14px;border-radius:var(--r-sm);overflow:hidden;
+  max-height:220px;background:var(--bg);display:none;border:1px solid var(--line-2);
+}
 .img-preview img{width:100%;height:100%;object-fit:cover;display:block}
 .img-preview.on{display:block}
 
-.empty{text-align:center;padding:60px 20px;color:var(--dim);font-size:14px}
-.empty .big{font-size:32px;margin-bottom:12px;opacity:.3}
+.empty{text-align:center;padding:64px 24px;color:var(--ink-3);font-size:14px}
+.empty .big{font-size:36px;margin-bottom:14px;opacity:.3;color:var(--cyan)}
+.empty p{margin-top:6px;font-family:var(--mono);font-size:12px}
 
-#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);padding:14px 22px;border-radius:12px;background:rgba(10,12,20,.95);border:1px solid rgba(94,234,212,.3);color:var(--fg);font-size:14px;font-weight:500;z-index:200;opacity:0;transition:all .35s var(--ease);backdrop-filter:blur(14px)}
+.info-box{
+  padding:16px 18px;background:var(--cyan-dim);
+  border:1px solid rgba(34,211,238,.25);border-radius:var(--r-sm);
+  font-size:13px;color:var(--ink);display:flex;gap:12px;align-items:flex-start;line-height:1.6;
+}
+.info-box .mono{font-family:var(--mono);color:var(--cyan);font-weight:600;flex-shrink:0;font-size:14px}
+.info-box code{
+  font-family:var(--mono);color:var(--cyan);background:rgba(34,211,238,.08);
+  padding:2px 6px;border-radius:4px;font-size:12px;
+}
+
+/* toast */
+#toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);
+  padding:14px 22px;border-radius:var(--r-sm);background:var(--surface);
+  border:1px solid rgba(34,211,238,.4);color:var(--ink);font-size:14px;font-weight:500;
+  z-index:2000;opacity:0;transition:all .3s var(--ease);backdrop-filter:blur(20px);
+  box-shadow:0 24px 72px rgba(0,0,0,.6),0 0 40px rgba(34,211,238,.15);
+  max-width:90vw;font-family:var(--mono);
+}
 #toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
-#toast.err{border-color:rgba(248,113,113,.4)}
+#toast.err{border-color:rgba(244,63,94,.5);box-shadow:0 24px 72px rgba(0,0,0,.6),0 0 40px rgba(244,63,94,.15)}
+
+/* debug bar */
+#debug{
+  position:fixed;bottom:0;left:0;right:0;z-index:100;
+  background:rgba(244,63,94,.95);color:#fff;
+  padding:10px 20px;font-family:var(--mono);font-size:12px;
+  display:none;justify-content:space-between;align-items:center;gap:16px;
+}
+#debug.show{display:flex}
+#debug .msg{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#debug .close{color:#fff;font-size:16px;padding:0 8px;opacity:.7}
+#debug .close:hover{opacity:1}
 </style>
 </head>
 <body>
 
+<div id="splash"><div class="spin"></div></div>
+
+<!-- ═══ LOGIN ═══ -->
 <div id="login">
   <div class="login-box">
+    <div class="mark">A</div>
     <h1>Admin</h1>
-    <div class="sub">// sign in to edit content</div>
+    <div class="sub">// authenticate to continue</div>
     <div class="field">
       <label>Email</label>
-      <input class="inp" type="email" id="email" autocomplete="username" />
+      <input class="inp" type="email" id="email" autocomplete="username" placeholder="you@example.com" />
     </div>
     <div class="field">
       <label>Password</label>
-      <input class="inp" type="password" id="password" autocomplete="current-password" />
+      <input class="inp" type="password" id="password" autocomplete="current-password" placeholder="••••••••" />
     </div>
     <button class="btn primary" id="loginBtn">Sign in →</button>
     <div class="err" id="loginErr"></div>
   </div>
 </div>
 
+<!-- ═══ APP ═══ -->
 <div id="app">
   <header class="top">
-    <div class="brand">ARBIN<span>.</span>ADMIN<span class="tag">// v1</span></div>
+    <div class="brand">
+      <span class="pulse"></span> admin <span>/ arbin-portfolio</span>
+    </div>
     <div class="user">
-      <span id="userEmail">—</span>
-      <button class="btn sm" id="logoutBtn">Logout</button>
+      <span class="u-mail" id="userEmail">—</span>
+      <button class="btn sm" id="logoutBtn">Sign out</button>
     </div>
   </header>
 
   <div class="layout">
     <aside>
-      <button class="tab active" data-tab="hero"><span class="ico">01</span> Hero</button>
-      <button class="tab" data-tab="about"><span class="ico">02</span> About</button>
-      <button class="tab" data-tab="projects"><span class="ico">03</span> Projects</button>
-      <button class="tab" data-tab="contact"><span class="ico">04</span> Contact</button>
+      <div class="aside-label">Design</div>
+      <button class="tab active" data-tab="theme"><span class="ico">01</span> Theme</button>
+      <button class="tab" data-tab="sections"><span class="ico">02</span> Sections</button>
+
+      <div class="aside-label">Content</div>
+      <button class="tab" data-tab="hero"><span class="ico">03</span> Hero</button>
+      <button class="tab" data-tab="home"><span class="ico">04</span> Home copy</button>
+      <button class="tab" data-tab="about"><span class="ico">05</span> About</button>
+      <button class="tab" data-tab="projects"><span class="ico">06</span> Projects</button>
+      <button class="tab" data-tab="contact"><span class="ico">07</span> Contact</button>
+      <button class="tab" data-tab="footer"><span class="ico">08</span> Footer</button>
+
+      <div class="aside-label">Advanced</div>
+      <button class="tab" data-tab="customcss"><span class="ico">09</span> Custom CSS</button>
+      <button class="tab" data-tab="backup"><span class="ico">10</span> Backup</button>
     </aside>
 
     <main class="content">
-      <section class="panel active" data-panel="hero">
-        <div class="phead"><h2>Hero section</h2><p>Shown on the landing page. Keep the tagline short.</p></div>
+
+      <!-- THEME -->
+      <section class="panel active" data-panel="theme">
+        <div class="phead">
+          <h2>Theme</h2>
+          <p>Brand, colors, and page title. Saved values apply site-wide on next page load.</p>
+        </div>
         <div class="form">
-          <div class="field"><label>Name</label><input class="inp" id="h-name" placeholder="Arbin" /></div>
-          <div class="field"><label>Tagline</label><input class="inp" id="h-tagline" placeholder="builds things that ship." /></div>
-          <div class="field"><label>Lede / intro sentence</label><textarea class="inp" id="h-lede" placeholder="Full-stack developer..."></textarea></div>
-          <div class="field"><label>Availability badge</label><input class="inp" id="h-avail" placeholder="available for hire" /></div>
+          <div class="group">
+            <div class="group-title">Brand</div>
+            <div class="row">
+              <div class="field"><label>Brand name</label><input class="inp" id="t-brand" placeholder="Arbin" /></div>
+              <div class="field"><label>Browser title</label><input class="inp" id="t-title" placeholder="Arbin — Full-stack developer" /></div>
+            </div>
+          </div>
+
+          <div class="group">
+            <div class="group-title">Colors</div>
+            <div class="row">
+              <div class="field">
+                <label>Accent</label>
+                <div class="color-row">
+                  <div class="color-wrap" style="--swatch:#22d3ee"><input class="inp" id="c-accent" placeholder="#22d3ee" /></div>
+                  <input type="color" class="color-picker" id="cp-accent" value="#22d3ee" />
+                </div>
+              </div>
+              <div class="field">
+                <label>Paper (background)</label>
+                <div class="color-row">
+                  <div class="color-wrap" style="--swatch:#f2efe9"><input class="inp" id="c-paper" placeholder="#f2efe9" /></div>
+                  <input type="color" class="color-picker" id="cp-paper" value="#f2efe9" />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="field">
+                <label>Ink (main text)</label>
+                <div class="color-row">
+                  <div class="color-wrap" style="--swatch:#0a0a0a"><input class="inp" id="c-ink" placeholder="#0a0a0a" /></div>
+                  <input type="color" class="color-picker" id="cp-ink" value="#0a0a0a" />
+                </div>
+              </div>
+              <div class="field">
+                <label>Muted text</label>
+                <div class="color-row">
+                  <div class="color-wrap" style="--swatch:#6a6a6a"><input class="inp" id="c-ink2" placeholder="#6a6a6a" /></div>
+                  <input type="color" class="color-picker" id="cp-ink2" value="#6a6a6a" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="group">
+            <div class="group-title">Accent presets</div>
+            <div class="preset-row" id="presets">
+              <div class="preset" data-color="#22d3ee" style="background:#22d3ee" title="Cyan"></div>
+              <div class="preset" data-color="#06b6d4" style="background:#06b6d4" title="Deep cyan"></div>
+              <div class="preset" data-color="#10b981" style="background:#10b981" title="Emerald"></div>
+              <div class="preset" data-color="#8b5cf6" style="background:#8b5cf6" title="Violet"></div>
+              <div class="preset" data-color="#f43f5e" style="background:#f43f5e" title="Rose"></div>
+              <div class="preset" data-color="#f59e0b" style="background:#f59e0b" title="Amber"></div>
+              <div class="preset" data-color="#0a0a0a" style="background:#0a0a0a" title="Ink"></div>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="btn primary" id="saveTheme">Save theme</button>
+            <span class="saved" id="savedTheme">✓ saved</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTIONS -->
+      <section class="panel" data-panel="sections">
+        <div class="phead">
+          <h2>Sections</h2>
+          <p>Hide or show sections of the homepage. Changes apply on next load.</p>
+        </div>
+        <div class="group">
+          <div class="toggle-row">
+            <div class="t-info"><span class="t-label">Hero</span><span class="t-desc">Headline, intro, CTA buttons</span></div>
+            <button class="toggle" data-key="hero"></button>
+          </div>
+          <div class="toggle-row">
+            <div class="t-info"><span class="t-label">Marquee</span><span class="t-desc">Scrolling tech stack band</span></div>
+            <button class="toggle" data-key="marquee"></button>
+          </div>
+          <div class="toggle-row">
+            <div class="t-info"><span class="t-label">Work preview</span><span class="t-desc">Selected projects list</span></div>
+            <button class="toggle" data-key="work"></button>
+          </div>
+          <div class="toggle-row">
+            <div class="t-info"><span class="t-label">Stats band</span><span class="t-desc">Three-up numbers row</span></div>
+            <button class="toggle" data-key="stats"></button>
+          </div>
+          <div class="toggle-row">
+            <div class="t-info"><span class="t-label">About strip</span><span class="t-desc">Two-column about teaser</span></div>
+            <button class="toggle" data-key="about"></button>
+          </div>
+          <div class="toggle-row">
+            <div class="t-info"><span class="t-label">CTA band</span><span class="t-desc">Black "let's build it" slab</span></div>
+            <button class="toggle" data-key="cta"></button>
+          </div>
+        </div>
+        <div class="actions" style="margin-top:20px">
+          <button class="btn primary" id="saveSections">Save sections</button>
+          <span class="saved" id="savedSections">✓ saved</span>
+        </div>
+      </section>
+
+      <!-- HERO -->
+      <section class="panel" data-panel="hero">
+        <div class="phead"><h2>Hero</h2><p>Landing page headline, intro, and photo.</p></div>
+        <div class="form">
+          <div class="row">
+            <div class="field"><label>Your name</label><input class="inp" id="h-name" placeholder="Arbin" /></div>
+            <div class="field"><label>Availability chip</label><input class="inp" id="h-avail" placeholder="Available for work" /></div>
+          </div>
+          <div class="field"><label>Intro sentence</label><textarea class="inp" id="h-lede" placeholder="I design, build, and deploy web products end-to-end."></textarea></div>
+          <div class="group">
+            <div class="group-title">Metadata</div>
+            <div class="row">
+              <div class="field"><label>Role label</label><input class="inp" id="h-role" placeholder="Full-stack engineer" /></div>
+              <div class="field"><label>Stack label</label><input class="inp" id="h-stack" placeholder="TS · React · Node · Python" /></div>
+            </div>
+          </div>
+          <div class="field">
+            <label>Profile photo</label>
+            <div class="drop" id="heroDrop"><div class="big">↓</div>drop image or click — auto-resized</div>
+            <input type="file" accept="image/*" id="heroFile" hidden />
+            <div class="img-preview" id="heroPreview"><img alt="" /></div>
+          </div>
           <div class="actions">
             <button class="btn primary" id="saveHero">Save hero</button>
             <span class="saved" id="savedHero">✓ saved</span>
@@ -169,11 +553,38 @@ main.content{padding:40px 48px;max-width:960px}
         </div>
       </section>
 
+      <!-- HOME COPY -->
+      <section class="panel" data-panel="home">
+        <div class="phead"><h2>Home copy</h2><p>Section headings and text on the homepage.</p></div>
+        <div class="form">
+          <div class="group">
+            <div class="group-title">Work section</div>
+            <div class="field"><label>Eyebrow</label><input class="inp" id="hm-work-eyebrow" placeholder="Selected work" /></div>
+            <div class="field"><label>Heading</label><input class="inp" id="hm-work-heading" placeholder="Three products. Live right now." /></div>
+            <div class="field"><label>Description</label><textarea class="inp" id="hm-work-desc"></textarea></div>
+          </div>
+          <div class="group">
+            <div class="group-title">About strip</div>
+            <div class="field"><label>Big statement</label><textarea class="inp" id="hm-about-big"></textarea></div>
+            <div class="field"><label>Body text</label><textarea class="inp" id="hm-about-body"></textarea></div>
+          </div>
+          <div class="group">
+            <div class="group-title">CTA band</div>
+            <div class="field"><label>Heading</label><input class="inp" id="hm-cta" placeholder="Got something in mind? Let's build it." /></div>
+          </div>
+          <div class="actions">
+            <button class="btn primary" id="saveHome">Save home copy</button>
+            <span class="saved" id="savedHome">✓ saved</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABOUT -->
       <section class="panel" data-panel="about">
-        <div class="phead"><h2>About section</h2><p>Paragraphs on top, skills list below.</p></div>
+        <div class="phead"><h2>About</h2><p>Bio paragraphs and skills list.</p></div>
         <div class="form">
           <div class="field">
-            <label>Paragraphs</label>
+            <label>Bio paragraphs</label>
             <div id="aboutParas"></div>
             <button class="mini-add" id="addPara">+ add paragraph</button>
           </div>
@@ -189,19 +600,25 @@ main.content{padding:40px 48px;max-width:960px}
         </div>
       </section>
 
+      <!-- PROJECTS -->
       <section class="panel" data-panel="projects">
-        <div class="phead"><h2>Projects</h2><p>Drag to reorder. Order saves automatically. Click a card to edit.</p></div>
+        <div class="phead"><h2>Projects</h2><p>Drag <span style="font-family:var(--mono);color:var(--cyan)">⋮⋮</span> to reorder. Click any card to edit.</p></div>
         <div id="projectsList"></div>
         <button class="btn primary" id="addProject" style="margin-top:16px;width:auto">+ Add project</button>
       </section>
 
+      <!-- CONTACT -->
       <section class="panel" data-panel="contact">
-        <div class="phead"><h2>Contact</h2><p>Email, social links, resume URL.</p></div>
+        <div class="phead"><h2>Contact</h2><p>Email and social links shown on the contact page.</p></div>
         <div class="form">
-          <div class="field"><label>Email</label><input class="inp" id="c-email" placeholder="you@domain.com" /></div>
+          <div class="field"><label>Email</label><input class="inp" id="c-email" placeholder="hello@arbin.dev" /></div>
           <div class="row">
-            <div class="field"><label>GitHub URL</label><input class="inp" id="c-github" placeholder="https://github.com/..." /></div>
-            <div class="field"><label>LinkedIn URL</label><input class="inp" id="c-linkedin" placeholder="https://linkedin.com/in/..." /></div>
+            <div class="field"><label>GitHub</label><input class="inp" id="c-github" placeholder="https://github.com/..." /></div>
+            <div class="field"><label>LinkedIn</label><input class="inp" id="c-linkedin" placeholder="https://linkedin.com/in/..." /></div>
+          </div>
+          <div class="row">
+            <div class="field"><label>Twitter / X</label><input class="inp" id="c-twitter" placeholder="https://twitter.com/..." /></div>
+            <div class="field"><label>Instagram</label><input class="inp" id="c-instagram" placeholder="https://instagram.com/..." /></div>
           </div>
           <div class="field"><label>Resume URL</label><input class="inp" id="c-resume" placeholder="https://... or /resume.pdf" /></div>
           <div class="actions">
@@ -210,22 +627,93 @@ main.content{padding:40px 48px;max-width:960px}
           </div>
         </div>
       </section>
+
+      <!-- FOOTER -->
+      <section class="panel" data-panel="footer">
+        <div class="phead"><h2>Footer</h2><p>Signature and copyright line.</p></div>
+        <div class="form">
+          <div class="row">
+            <div class="field"><label>Signature</label><input class="inp" id="f-sig" placeholder="Arbin" /></div>
+            <div class="field"><label>Copyright</label><input class="inp" id="f-copy" placeholder="© 2026 — Built from scratch" /></div>
+          </div>
+          <div class="actions">
+            <button class="btn primary" id="saveFooter">Save footer</button>
+            <span class="saved" id="savedFooter">✓ saved</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- CUSTOM CSS -->
+      <section class="panel" data-panel="customcss">
+        <div class="phead"><h2>Custom CSS</h2><p>Injected into every page. Override anything.</p></div>
+        <div class="form">
+          <div class="info-box">
+            <span class="mono">i</span>
+            <div>Anything you write here gets appended to a <code>&lt;style&gt;</code> tag on every page load. Use CSS variables like <code>var(--accent)</code> or hard-code your own.</div>
+          </div>
+          <div class="field">
+            <label>CSS</label>
+            <textarea class="inp" id="custom-css" style="min-height:360px;font-family:var(--mono);font-size:13px;line-height:1.6" placeholder="/* override anything */
+h1 { letter-spacing: -0.06em; }"></textarea>
+          </div>
+          <div class="actions">
+            <button class="btn primary" id="saveCss">Save CSS</button>
+            <button class="btn" id="clearCss">Clear</button>
+            <span class="saved" id="savedCss">✓ saved</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- BACKUP -->
+      <section class="panel" data-panel="backup">
+        <div class="phead"><h2>Backup / restore</h2><p>Export or import the entire site as JSON.</p></div>
+        <div class="form">
+          <div class="info-box">
+            <span class="mono">i</span>
+            <div>Export downloads <code>portfolio-backup.json</code> — all settings, content, and projects. Import overwrites settings + content and merges projects.</div>
+          </div>
+          <div class="actions">
+            <button class="btn primary" id="exportBtn">⬇ Export backup</button>
+            <button class="btn" id="importBtn">⬆ Import backup</button>
+            <input type="file" accept="application/json" id="importFile" hidden />
+          </div>
+          <div class="actions" style="margin-top:24px;padding-top:24px;border-top:1px solid var(--line)">
+            <button class="btn danger" id="clearProjects">Delete all projects</button>
+            <button class="btn danger" id="resetAll">Reset everything</button>
+          </div>
+        </div>
+      </section>
+
     </main>
   </div>
 </div>
 
 <div id="toast"></div>
+<div id="debug"><span class="msg" id="debugMsg"></span><button class="close" id="debugClose">×</button></div>
 
 <script type="module">
+window.addEventListener('error', e => {
+  const d = document.getElementById('debug');
+  const m = document.getElementById('debugMsg');
+  if (d && m) { m.textContent = 'ERROR: ' + (e.message || 'unknown') + (e.filename ? ' @ ' + e.filename.split('/').pop() + ':' + e.lineno : ''); d.classList.add('show'); }
+});
+window.addEventListener('unhandledrejection', e => {
+  const d = document.getElementById('debug');
+  const m = document.getElementById('debugMsg');
+  if (d && m) { m.textContent = 'PROMISE: ' + (e.reason?.message || e.reason || 'unknown'); d.classList.add('show'); }
+});
+document.getElementById('debugClose').onclick = () => document.getElementById('debug').classList.remove('show');
+
 import { auth, db } from "./assets/js/firebase-init.js";
 import { signInWithEmailAndPassword, onAuthStateChanged, signOut }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import {
   doc, getDoc, setDoc, collection, getDocs, addDoc, deleteDoc,
-  query, orderBy, updateDoc
+  query, orderBy, updateDoc, writeBatch
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const $ = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
 const el = (tag, cls) => { const e = document.createElement(tag); if (cls) e.className = cls; return e; };
 
 function toast(msg, isErr) {
@@ -234,9 +722,8 @@ function toast(msg, isErr) {
   t.classList.toggle("err", !!isErr);
   t.classList.add("on");
   clearTimeout(t._t);
-  t._t = setTimeout(() => t.classList.remove("on"), 2400);
+  t._t = setTimeout(() => t.classList.remove("on"), 2600);
 }
-
 function flash(id) {
   const s = $(id);
   s.classList.add("on");
@@ -244,93 +731,226 @@ function flash(id) {
   s._t = setTimeout(() => s.classList.remove("on"), 1800);
 }
 
+/* ───── AUTH ───── */
 $("#loginBtn").onclick = async () => {
   const email = $("#email").value.trim();
-  const pass  = $("#password").value;
+  const pass = $("#password").value;
   $("#loginErr").textContent = "";
   if (!email || !pass) { $("#loginErr").textContent = "email and password required"; return; }
+  const btn = $("#loginBtn");
+  btn.disabled = true; btn.textContent = "Signing in…";
   try {
     await signInWithEmailAndPassword(auth, email, pass);
   } catch (e) {
-    $("#loginErr").textContent = e.code === "auth/invalid-credential"
-      ? "wrong email or password" : e.message;
+    $("#loginErr").textContent = e.code === "auth/invalid-credential" ? "wrong email or password"
+      : e.code === "auth/too-many-requests" ? "too many attempts — wait a minute"
+      : e.code === "auth/network-request-failed" ? "network error — check connection"
+      : e.message;
+    btn.disabled = false; btn.textContent = "Sign in →";
   }
 };
 $("#password").addEventListener("keydown", e => { if (e.key === "Enter") $("#loginBtn").click(); });
-
 $("#logoutBtn").onclick = () => signOut(auth);
 
 onAuthStateChanged(auth, user => {
+  $("#splash").classList.add("hide");
   if (user) {
+    $("#login").classList.remove("show");
     $("#login").classList.add("hide");
     $("#app").classList.add("show");
     $("#userEmail").textContent = user.email;
+    $("#loginBtn").disabled = false; $("#loginBtn").textContent = "Sign in →";
     boot();
   } else {
     $("#login").classList.remove("hide");
+    $("#login").classList.add("show");
     $("#app").classList.remove("show");
     $("#password").value = "";
   }
 });
 
-document.querySelectorAll(".tab").forEach(t => {
+/* ───── TABS ───── */
+$$(".tab").forEach(t => {
   t.onclick = () => {
-    document.querySelectorAll(".tab").forEach(x => x.classList.remove("active"));
-    document.querySelectorAll(".panel").forEach(x => x.classList.remove("active"));
+    $$(".tab").forEach(x => x.classList.remove("active"));
+    $$(".panel").forEach(x => x.classList.remove("active"));
     t.classList.add("active");
     document.querySelector(`.panel[data-panel="${t.dataset.tab}"]`).classList.add("active");
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 });
 
+/* ───── COLOR INPUTS ───── */
+function bindColor(name) {
+  const txt = $(`#c-${name}`);
+  const pick = $(`#cp-${name}`);
+  if (!txt || !pick) return;
+  pick.addEventListener('input', () => {
+    txt.value = pick.value.toUpperCase();
+    txt.closest('.color-wrap')?.style.setProperty('--swatch', pick.value);
+  });
+  txt.addEventListener('input', () => {
+    const v = txt.value.trim();
+    if (/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(v)) {
+      pick.value = v;
+      txt.closest('.color-wrap')?.style.setProperty('--swatch', v);
+    }
+  });
+}
+['accent','paper','ink','ink2'].forEach(bindColor);
+
+$$('#presets .preset').forEach(sw => {
+  sw.onclick = () => {
+    const c = sw.dataset.color;
+    $("#c-accent").value = c;
+    $("#cp-accent").value = c;
+    $("#c-accent").closest('.color-wrap')?.style.setProperty('--swatch', c);
+    $$('#presets .preset').forEach(p => p.classList.remove('active'));
+    sw.classList.add('active');
+  };
+});
+
+/* ───── THEME ───── */
+async function loadTheme() {
+  const s = await getDoc(doc(db, "settings", "theme"));
+  const d = s.exists() ? s.data() : {};
+  $("#t-brand").value = d.brandName || "Arbin";
+  $("#t-title").value = d.metaTitle || "Arbin — Full-stack developer";
+  const set = (name, v) => {
+    if (!$( `#c-${name}` )) return;
+    $(`#c-${name}`).value = v;
+    $(`#cp-${name}`).value = v;
+    $(`#c-${name}`).closest('.color-wrap')?.style.setProperty('--swatch', v);
+  };
+  set('accent', d.accent || "#22d3ee");
+  set('paper',  d.paper  || "#f2efe9");
+  set('ink',    d.ink    || "#0a0a0a");
+  set('ink2',   d.ink2   || "#6a6a6a");
+  const cur = (d.accent || "#22d3ee").toLowerCase();
+  $$('#presets .preset').forEach(p => p.classList.toggle('active', p.dataset.color.toLowerCase() === cur));
+}
+$("#saveTheme").onclick = async () => {
+  try {
+    await setDoc(doc(db, "settings", "theme"), {
+      brandName: $("#t-brand").value.trim() || "Arbin",
+      metaTitle: $("#t-title").value.trim(),
+      accent: $("#c-accent").value.trim(),
+      paper:  $("#c-paper").value.trim(),
+      ink:    $("#c-ink").value.trim(),
+      ink2:   $("#c-ink2").value.trim(),
+      updatedAt: Date.now()
+    }, { merge: true });
+    flash("#savedTheme"); toast("theme saved — refresh site");
+  } catch (e) { toast(e.message, true); }
+};
+
+/* ───── SECTIONS ───── */
+async function loadSections() {
+  const s = await getDoc(doc(db, "settings", "sections"));
+  const d = s.exists() ? s.data() : {};
+  $$('.toggle').forEach(t => {
+    const k = t.dataset.key;
+    t.classList.toggle('on', d[k] !== false);
+    t.onclick = () => t.classList.toggle('on');
+  });
+}
+$("#saveSections").onclick = async () => {
+  try {
+    const data = {};
+    $$('.toggle').forEach(t => data[t.dataset.key] = t.classList.contains('on'));
+    await setDoc(doc(db, "settings", "sections"), data, { merge: true });
+    flash("#savedSections"); toast("sections saved");
+  } catch (e) { toast(e.message, true); }
+};
+
+/* ───── HERO ───── */
+let heroPhotoData = null;
 async function loadHero() {
-  const snap = await getDoc(doc(db, "content", "hero"));
-  const d = snap.exists() ? snap.data() : {};
+  const s = await getDoc(doc(db, "content", "hero"));
+  const d = s.exists() ? s.data() : {};
   $("#h-name").value = d.name || "";
-  $("#h-tagline").value = d.tagline || "";
-  $("#h-lede").value = d.lede || "";
   $("#h-avail").value = d.availability || "";
+  $("#h-lede").value = d.lede || "";
+  $("#h-role").value = d.role || "";
+  $("#h-stack").value = d.stack || "";
+  if (d.photoUrl) {
+    $("#heroPreview").querySelector("img").src = d.photoUrl;
+    $("#heroPreview").classList.add("on");
+    heroPhotoData = d.photoUrl;
+  }
+}
+const heroDrop = $("#heroDrop");
+heroDrop.onclick = () => $("#heroFile").click();
+$("#heroFile").onchange = () => handleHero($("#heroFile").files[0]);
+heroDrop.addEventListener("dragover", e => { e.preventDefault(); heroDrop.classList.add("over"); });
+heroDrop.addEventListener("dragleave", () => heroDrop.classList.remove("over"));
+heroDrop.addEventListener("drop", e => { e.preventDefault(); heroDrop.classList.remove("over"); handleHero(e.dataTransfer.files[0]); });
+async function handleHero(f) {
+  if (!f || !f.type.startsWith("image/")) return;
+  const url = await resizeImage(f, 1000, 0.82);
+  $("#heroPreview").querySelector("img").src = url;
+  $("#heroPreview").classList.add("on");
+  heroPhotoData = url;
+  toast("photo ready — click save hero");
 }
 $("#saveHero").onclick = async () => {
   try {
-    await setDoc(doc(db, "content", "hero"), {
+    const data = {
       name: $("#h-name").value.trim(),
-      tagline: $("#h-tagline").value.trim(),
+      availability: $("#h-avail").value.trim() || "Available for work",
       lede: $("#h-lede").value.trim(),
-      availability: $("#h-avail").value.trim() || "available for hire"
-    }, { merge: true });
+      role: $("#h-role").value.trim(),
+      stack: $("#h-stack").value.trim()
+    };
+    if (heroPhotoData) data.photoUrl = heroPhotoData;
+    await setDoc(doc(db, "content", "hero"), data, { merge: true });
     flash("#savedHero"); toast("hero saved");
   } catch (e) { toast(e.message, true); }
 };
 
+/* ───── HOME COPY ───── */
+async function loadHome() {
+  const s = await getDoc(doc(db, "content", "home"));
+  const d = s.exists() ? s.data() : {};
+  $("#hm-work-eyebrow").value = d.workEyebrow || "";
+  $("#hm-work-heading").value = d.workHeading || "";
+  $("#hm-work-desc").value = d.workDesc || "";
+  $("#hm-about-big").value = d.aboutBig || "";
+  $("#hm-about-body").value = d.aboutBody || "";
+  $("#hm-cta").value = d.ctaHeading || "";
+}
+$("#saveHome").onclick = async () => {
+  try {
+    await setDoc(doc(db, "content", "home"), {
+      workEyebrow: $("#hm-work-eyebrow").value.trim(),
+      workHeading: $("#hm-work-heading").value.trim(),
+      workDesc: $("#hm-work-desc").value.trim(),
+      aboutBig: $("#hm-about-big").value.trim(),
+      aboutBody: $("#hm-about-body").value.trim(),
+      ctaHeading: $("#hm-cta").value.trim()
+    }, { merge: true });
+    flash("#savedHome"); toast("home copy saved");
+  } catch (e) { toast(e.message, true); }
+};
+
+/* ───── ABOUT ───── */
 function paraRow(val = "") {
   const row = el("div", "list-row");
-  const ta = el("textarea", "inp");
-  ta.value = val;
-  ta.placeholder = "paragraph text…";
-  const rm = el("button", "icon-btn danger");
-  rm.innerHTML = "×";
-  rm.onclick = () => row.remove();
-  row.append(ta, rm);
-  return row;
+  const ta = el("textarea", "inp"); ta.value = val; ta.placeholder = "paragraph…";
+  const rm = el("button", "icon-btn danger"); rm.innerHTML = "×"; rm.onclick = () => row.remove();
+  row.append(ta, rm); return row;
 }
 function skillRow(val = "") {
   const row = el("div", "list-row");
-  const inp = el("input", "inp");
-  inp.type = "text";
-  inp.value = val;
-  inp.placeholder = "skill";
-  const rm = el("button", "icon-btn danger");
-  rm.innerHTML = "×";
-  rm.onclick = () => row.remove();
-  row.append(inp, rm);
-  return row;
+  const i = el("input", "inp"); i.value = val; i.placeholder = "skill";
+  const rm = el("button", "icon-btn danger"); rm.innerHTML = "×"; rm.onclick = () => row.remove();
+  row.append(i, rm); return row;
 }
 $("#addPara").onclick = () => $("#aboutParas").append(paraRow());
 $("#addSkill").onclick = () => $("#aboutSkills").append(skillRow());
-
 async function loadAbout() {
-  const snap = await getDoc(doc(db, "content", "about"));
-  const d = snap.exists() ? snap.data() : {};
+  const s = await getDoc(doc(db, "content", "about"));
+  const d = s.exists() ? s.data() : {};
   const pw = $("#aboutParas"); pw.innerHTML = "";
   (d.paragraphs?.length ? d.paragraphs : [""]).forEach(p => pw.append(paraRow(p)));
   const sw = $("#aboutSkills"); sw.innerHTML = "";
@@ -345,10 +965,10 @@ $("#saveAbout").onclick = async () => {
   } catch (e) { toast(e.message, true); }
 };
 
+/* ───── PROJECTS ───── */
 let projects = [];
 async function loadProjects() {
-  const q = query(collection(db, "projects"), orderBy("order", "asc"));
-  const snap = await getDocs(q);
+  const snap = await getDocs(query(collection(db, "projects"), orderBy("order", "asc")));
   projects = snap.docs.map(d => ({ id: d.id, ...d.data() }));
   renderProjects();
 }
@@ -356,20 +976,21 @@ function renderProjects() {
   const wrap = $("#projectsList");
   wrap.innerHTML = "";
   if (!projects.length) {
-    wrap.innerHTML = `<div class="empty"><div class="big">◇</div>no projects yet — add one below.</div>`;
+    wrap.innerHTML = `<div class="empty"><div class="big">◇</div><p>no projects yet</p></div>`;
     return;
   }
   projects.forEach((p, i) => wrap.append(projectCard(p, i)));
 }
 function projectCard(p, i) {
   const card = el("div", "project");
-  card.draggable = false;
   card.dataset.id = p.id;
+  card.draggable = false;
   const head = el("div", "project-head");
   head.innerHTML = `
     <span class="drag" data-drag>⋮⋮</span>
     <div class="pico">${String(i+1).padStart(2,"0")}</div>
     <div class="ptitle">${p.title || "Untitled"}</div>
+    ${p.featured ? '<span class="ptag">featured</span>' : ''}
     <span class="pchev">▾</span>
   `;
   const body = el("div", "project-body");
@@ -377,13 +998,20 @@ function projectCard(p, i) {
     <div class="form">
       <div class="field"><label>Title</label><input class="inp" data-f="title" /></div>
       <div class="field"><label>Description</label><textarea class="inp" data-f="description"></textarea></div>
-      <div class="field"><label>Tags (comma separated)</label><input class="inp" data-f="tags" placeholder="React, Node, Postgres" /></div>
-      <div class="field"><label>Link</label><input class="inp" data-f="link" placeholder="https://…" /></div>
+      <div class="row">
+        <div class="field"><label>Link</label><input class="inp" data-f="link" placeholder="https://…" /></div>
+        <div class="field"><label>Year</label><input class="inp" data-f="year" placeholder="2026" /></div>
+      </div>
+      <div class="field"><label>Tags (comma separated)</label><input class="inp" data-f="tags" placeholder="React, Node" /></div>
+      <div class="field" style="display:flex;align-items:center;gap:10px">
+        <input type="checkbox" data-f="featured" style="width:18px;height:18px;accent-color:var(--cyan)" />
+        <label style="margin:0;text-transform:none;letter-spacing:0;font-size:13px;color:var(--ink-2);font-family:var(--sans);font-weight:400">Featured (bigger on home grid)</label>
+      </div>
       <div class="field">
         <label>Image</label>
-        <div class="drop" data-drop><div class="big">↓</div>drop image or click — auto-resized to 1200px</div>
+        <div class="drop" data-drop><div class="big">↓</div>drop image or click</div>
         <input type="file" accept="image/*" data-file hidden />
-        <input class="inp" data-f="imageUrl" placeholder="…or paste an image URL" style="margin-top:10px" />
+        <input class="inp" data-f="imageUrl" placeholder="…or paste URL" style="margin-top:10px" />
         <div class="img-preview" data-prev><img alt="" /></div>
       </div>
       <div class="actions">
@@ -393,15 +1021,15 @@ function projectCard(p, i) {
       </div>
     </div>
   `;
-  head.onclick = (e) => {
-    if (e.target.closest("[data-drag]")) return;
-    card.classList.toggle("open");
-  };
+  head.onclick = (e) => { if (e.target.closest("[data-drag]")) return; card.classList.toggle("open"); };
   body.querySelector('[data-f="title"]').value = p.title || "";
   body.querySelector('[data-f="description"]').value = p.description || "";
-  body.querySelector('[data-f="tags"]').value = (p.tags || []).join(", ");
   body.querySelector('[data-f="link"]').value = p.link || "";
+  body.querySelector('[data-f="year"]').value = p.year || "";
+  body.querySelector('[data-f="tags"]').value = (p.tags || []).join(", ");
   body.querySelector('[data-f="imageUrl"]').value = p.imageUrl || "";
+  body.querySelector('[data-f="featured"]').checked = !!p.featured;
+
   const prev = body.querySelector("[data-prev]");
   const prevImg = prev.querySelector("img");
   if (p.imageUrl) { prevImg.src = p.imageUrl; prev.classList.add("on"); }
@@ -409,11 +1037,10 @@ function projectCard(p, i) {
   const drop = body.querySelector("[data-drop]");
   const file = body.querySelector("[data-file]");
   const urlInp = body.querySelector('[data-f="imageUrl"]');
-  const applyImg = (dataUrl) => { prevImg.src = dataUrl; prev.classList.add("on"); urlInp.value = dataUrl; };
+  const applyImg = (u) => { prevImg.src = u; prev.classList.add("on"); urlInp.value = u; };
   const handleFile = async (f) => {
     if (!f || !f.type.startsWith("image/")) return;
-    const dataUrl = await resizeImage(f, 1200, 0.82);
-    applyImg(dataUrl);
+    applyImg(await resizeImage(f, 1200, 0.82));
     toast("image ready — click save");
   };
   drop.onclick = () => file.click();
@@ -431,27 +1058,25 @@ function projectCard(p, i) {
     const data = {
       title: body.querySelector('[data-f="title"]').value.trim(),
       description: body.querySelector('[data-f="description"]').value.trim(),
-      tags: body.querySelector('[data-f="tags"]').value.split(",").map(s => s.trim()).filter(Boolean),
       link: body.querySelector('[data-f="link"]').value.trim(),
+      year: body.querySelector('[data-f="year"]').value.trim(),
+      tags: body.querySelector('[data-f="tags"]').value.split(",").map(s => s.trim()).filter(Boolean),
       imageUrl: urlInp.value.trim(),
-      order: p.order ?? i,
+      featured: body.querySelector('[data-f="featured"]').checked,
+      order: p.order ?? i
     };
     try {
       await updateDoc(doc(db, "projects", p.id), data);
       head.querySelector(".ptitle").textContent = data.title || "Untitled";
       body.querySelector("[data-saved]").classList.add("on");
       setTimeout(() => body.querySelector("[data-saved]").classList.remove("on"), 1800);
-      toast("project saved");
+      toast("saved");
     } catch (e) { toast(e.message, true); }
   };
-
   body.querySelector("[data-del]").onclick = async () => {
     if (!confirm(`delete "${p.title || "Untitled"}"?`)) return;
-    try {
-      await deleteDoc(doc(db, "projects", p.id));
-      toast("deleted");
-      await loadProjects();
-    } catch (e) { toast(e.message, true); }
+    try { await deleteDoc(doc(db, "projects", p.id)); toast("deleted"); await loadProjects(); }
+    catch (e) { toast(e.message, true); }
   };
 
   card.append(head, body);
@@ -459,8 +1084,8 @@ function projectCard(p, i) {
   return card;
 }
 function enableDrag(card, handle) {
-  handle.addEventListener("mousedown", () => { card.draggable = true; });
-  handle.addEventListener("mouseup",   () => { card.draggable = false; });
+  handle.addEventListener("mousedown", () => card.draggable = true);
+  handle.addEventListener("mouseup", () => card.draggable = false);
   card.addEventListener("dragstart", e => {
     card.classList.add("dragging");
     e.dataTransfer.setData("text/plain", card.dataset.id);
@@ -469,12 +1094,12 @@ function enableDrag(card, handle) {
   card.addEventListener("dragend", () => {
     card.classList.remove("dragging");
     card.draggable = false;
-    document.querySelectorAll(".drop-target").forEach(x => x.classList.remove("drop-target"));
+    $$(".drop-target").forEach(x => x.classList.remove("drop-target"));
     persistOrder();
   });
   card.addEventListener("dragover", e => {
     e.preventDefault();
-    const src = document.querySelector(".dragging");
+    const src = $(".dragging");
     if (!src || src === card) return;
     const wrap = $("#projectsList");
     const rect = card.getBoundingClientRect();
@@ -487,16 +1112,18 @@ function enableDrag(card, handle) {
 async function persistOrder() {
   const ids = [...$("#projectsList").querySelectorAll(".project")].map(c => c.dataset.id);
   try {
-    await Promise.all(ids.map((id, i) => updateDoc(doc(db, "projects", id), { order: i })));
+    const batch = writeBatch(db);
+    ids.forEach((id, i) => batch.update(doc(db, "projects", id), { order: i }));
+    await batch.commit();
     toast("order saved");
     await loadProjects();
   } catch (e) { toast(e.message, true); }
 }
 $("#addProject").onclick = async () => {
   try {
-    const order = projects.length;
     const ref = await addDoc(collection(db, "projects"), {
-      title: "New project", description: "", tags: [], link: "", imageUrl: "", order, createdAt: Date.now()
+      title: "New project", description: "", tags: [], link: "", year: "", imageUrl: "",
+      featured: false, order: projects.length, createdAt: Date.now()
     });
     await loadProjects();
     const card = document.querySelector(`.project[data-id="${ref.id}"]`);
@@ -504,35 +1131,15 @@ $("#addProject").onclick = async () => {
   } catch (e) { toast(e.message, true); }
 };
 
-function resizeImage(file, maxW, quality) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      const img = new Image();
-      img.onload = () => {
-        const scale = Math.min(1, maxW / img.width);
-        const w = Math.round(img.width * scale);
-        const h = Math.round(img.height * scale);
-        const c = document.createElement("canvas");
-        c.width = w; c.height = h;
-        const ctx = c.getContext("2d");
-        ctx.drawImage(img, 0, 0, w, h);
-        resolve(c.toDataURL("image/jpeg", quality));
-      };
-      img.onerror = reject;
-      img.src = reader.result;
-    };
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-}
-
+/* ───── CONTACT ───── */
 async function loadContact() {
-  const snap = await getDoc(doc(db, "content", "contact"));
-  const d = snap.exists() ? snap.data() : {};
+  const s = await getDoc(doc(db, "content", "contact"));
+  const d = s.exists() ? s.data() : {};
   $("#c-email").value = d.email || "";
   $("#c-github").value = d.github || "";
   $("#c-linkedin").value = d.linkedin || "";
+  $("#c-twitter").value = d.twitter || "";
+  $("#c-instagram").value = d.instagram || "";
   $("#c-resume").value = d.resumeUrl || "";
 }
 $("#saveContact").onclick = async () => {
@@ -541,18 +1148,151 @@ $("#saveContact").onclick = async () => {
       email: $("#c-email").value.trim(),
       github: $("#c-github").value.trim(),
       linkedin: $("#c-linkedin").value.trim(),
+      twitter: $("#c-twitter").value.trim(),
+      instagram: $("#c-instagram").value.trim(),
       resumeUrl: $("#c-resume").value.trim()
     }, { merge: true });
     flash("#savedContact"); toast("contact saved");
   } catch (e) { toast(e.message, true); }
 };
 
+/* ───── FOOTER ───── */
+async function loadFooter() {
+  const s = await getDoc(doc(db, "content", "footer"));
+  const d = s.exists() ? s.data() : {};
+  $("#f-sig").value = d.signature || "";
+  $("#f-copy").value = d.copy || "";
+}
+$("#saveFooter").onclick = async () => {
+  try {
+    await setDoc(doc(db, "content", "footer"), {
+      signature: $("#f-sig").value.trim(),
+      copy: $("#f-copy").value.trim()
+    }, { merge: true });
+    flash("#savedFooter"); toast("footer saved");
+  } catch (e) { toast(e.message, true); }
+};
+
+/* ───── CUSTOM CSS ───── */
+async function loadCss() {
+  const s = await getDoc(doc(db, "settings", "customcss"));
+  $("#custom-css").value = s.exists() ? (s.data().css || "") : "";
+}
+$("#saveCss").onclick = async () => {
+  try {
+    await setDoc(doc(db, "settings", "customcss"), { css: $("#custom-css").value, updatedAt: Date.now() }, { merge: true });
+    flash("#savedCss"); toast("css saved — refresh site");
+  } catch (e) { toast(e.message, true); }
+};
+$("#clearCss").onclick = async () => {
+  if (!confirm("clear all custom CSS?")) return;
+  $("#custom-css").value = "";
+  await setDoc(doc(db, "settings", "customcss"), { css: "" }, { merge: true });
+  toast("cleared");
+};
+
+/* ───── BACKUP ───── */
+$("#exportBtn").onclick = async () => {
+  try {
+    const out = { exportedAt: new Date().toISOString(), version: 1, settings: {}, content: {}, projects: [] };
+    for (const k of ["theme","sections","customcss"]) {
+      const snap = await getDoc(doc(db, "settings", k));
+      if (snap.exists()) out.settings[k] = snap.data();
+    }
+    for (const k of ["hero","home","about","contact","footer"]) {
+      const snap = await getDoc(doc(db, "content", k));
+      if (snap.exists()) out.content[k] = snap.data();
+    }
+    const pSnap = await getDocs(query(collection(db, "projects"), orderBy("order", "asc")));
+    out.projects = pSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+    const blob = new Blob([JSON.stringify(out, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = `portfolio-backup-${Date.now()}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast("exported");
+  } catch (e) { toast(e.message, true); }
+};
+$("#importBtn").onclick = () => $("#importFile").click();
+$("#importFile").onchange = async (e) => {
+  const f = e.target.files[0];
+  if (!f) return;
+  if (!confirm("Import will overwrite settings + content, and merge projects. Continue?")) return;
+  try {
+    const data = JSON.parse(await f.text());
+    if (data.settings) for (const k of Object.keys(data.settings)) await setDoc(doc(db, "settings", k), data.settings[k], { merge: true });
+    if (data.content)  for (const k of Object.keys(data.content))  await setDoc(doc(db, "content", k), data.content[k], { merge: true });
+    if (Array.isArray(data.projects)) {
+      for (const p of data.projects) {
+        const { id, ...rest } = p;
+        if (id) await setDoc(doc(db, "projects", id), rest, { merge: true });
+        else await addDoc(collection(db, "projects"), rest);
+      }
+    }
+    toast("imported — reloading");
+    setTimeout(() => location.reload(), 900);
+  } catch (err) { toast("import failed: " + err.message, true); }
+};
+$("#clearProjects").onclick = async () => {
+  if (!confirm("delete ALL projects? cannot be undone.")) return;
+  if (!confirm("really sure?")) return;
+  try {
+    const snap = await getDocs(collection(db, "projects"));
+    const batch = writeBatch(db);
+    snap.docs.forEach(d => batch.delete(d.ref));
+    await batch.commit();
+    toast("projects deleted"); await loadProjects();
+  } catch (e) { toast(e.message, true); }
+};
+$("#resetAll").onclick = async () => {
+  if (!confirm("reset EVERYTHING (settings, content, projects)?")) return;
+  if (!confirm("last chance — this wipes the whole site.")) return;
+  try {
+    for (const k of ["theme","sections","customcss"]) await deleteDoc(doc(db, "settings", k));
+    for (const k of ["hero","home","about","contact","footer"]) await deleteDoc(doc(db, "content", k));
+    const snap = await getDocs(collection(db, "projects"));
+    const batch = writeBatch(db);
+    snap.docs.forEach(d => batch.delete(d.ref));
+    await batch.commit();
+    toast("reset complete — reloading");
+    setTimeout(() => location.reload(), 900);
+  } catch (e) { toast(e.message, true); }
+};
+
+/* ───── IMAGE RESIZE ───── */
+function resizeImage(file, maxW, quality) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        const scale = Math.min(1, maxW / img.width);
+        const w = Math.round(img.width * scale);
+        const h = Math.round(img.height * scale);
+        const c = document.createElement("canvas");
+        c.width = w; c.height = h;
+        c.getContext("2d").drawImage(img, 0, 0, w, h);
+        resolve(c.toDataURL("image/jpeg", quality));
+      };
+      img.onerror = reject;
+      img.src = r.result;
+    };
+    r.onerror = reject;
+    r.readAsDataURL(file);
+  });
+}
+
+/* ───── BOOT ───── */
 async function boot() {
   try {
-    await Promise.all([loadHero(), loadAbout(), loadProjects(), loadContact()]);
+    await Promise.all([loadTheme(), loadSections(), loadHero(), loadHome(), loadAbout(), loadProjects(), loadContact(), loadFooter(), loadCss()]);
   } catch (e) {
     console.error(e);
-    toast("failed to load content — check rules", true);
+    toast("load failed — check firestore rules", true);
+    const d = document.getElementById('debug');
+    const m = document.getElementById('debugMsg');
+    if (d && m) { m.textContent = 'BOOT: ' + (e.message || e); d.classList.add('show'); }
   }
 }
 </script>

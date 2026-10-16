@@ -3,102 +3,87 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<meta name="theme-color" content="#f6f5f1" />
+<meta name="theme-color" content="#0a0b0f" />
 <title>About — Arbin</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/base.css">
 <style>
-  .page-head{padding:140px 0 0}
+  .page-head{padding:150px 0 0}
   @media(max-width:900px){.page-head{padding:110px 0 0}}
-  .page-head .stack{display:flex;flex-direction:column;gap:20px;align-items:flex-start;margin-bottom:80px}
-  .page-head h1{max-width:16ch}
+  .page-head .stack{display:flex;flex-direction:column;gap:22px;align-items:flex-start;margin-bottom:80px}
+  .page-head h1{max-width:15ch}
 
-  .bio-grid{
-    display:grid;grid-template-columns:1.4fr 1fr;gap:80px;align-items:start;
-  }
-  @media(max-width:900px){.bio-grid{grid-template-columns:1fr;gap:48px}}
-  .bio-grid p{font-size:17px;line-height:1.75;color:var(--ink-2);margin-bottom:20px;max-width:60ch}
-  .bio-grid p strong{color:var(--ink);font-weight:600}
-  .bio-grid p:first-child::first-letter{
-    font-size:3.2em;font-weight:600;line-height:.9;
-    float:left;margin:6px 12px 0 0;color:var(--ink);
-    letter-spacing:-.05em;
+  .bio-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:90px;align-items:start;padding-top:56px;border-top:1px solid var(--stroke)}
+  @media(max-width:900px){.bio-grid{grid-template-columns:1fr;gap:48px;padding-top:36px}}
+  .bio-grid > div:first-child p{font-size:clamp(15px,1.1vw,17px);line-height:1.75;color:var(--ink-2);margin-bottom:22px;max-width:56ch}
+  .bio-grid > div:first-child p strong{color:var(--ink);font-weight:600}
+  .bio-grid > div:first-child p:first-child::first-letter{
+    font-size:3.6em;font-weight:700;line-height:.85;float:left;
+    margin:10px 14px 0 0;letter-spacing:-.05em;
+    background:linear-gradient(135deg,var(--cyan),var(--cyan-2));
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
   }
 
-  .side{display:flex;flex-direction:column;gap:40px}
+  .side{display:flex;flex-direction:column;gap:24px;position:sticky;top:100px}
+  @media(max-width:900px){.side{position:static}}
+  .side-block{background:var(--surface);border:1px solid var(--stroke);border-radius:16px;padding:24px;backdrop-filter:blur(12px)}
   .side-block h4{
-    font-family:var(--mono);font-size:12px;font-weight:500;
-    letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);
-    margin-bottom:16px;
+    font-family:var(--mono);font-size:11px;font-weight:600;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);margin-bottom:16px;
   }
-  .side-block ul{list-style:none;display:flex;flex-direction:column;gap:0}
+  .side-block ul{list-style:none}
   .side-block li{
     display:flex;justify-content:space-between;align-items:baseline;
-    padding:14px 0;border-bottom:1px solid var(--line);
-    font-size:15px;color:var(--ink);
+    padding:12px 0;border-bottom:1px solid var(--stroke);
+    font-family:var(--mono);font-size:13px;color:var(--ink);letter-spacing:.01em;
   }
   .side-block li:last-child{border-bottom:none}
-  .side-block li span:last-child{font-size:13px;color:var(--ink-3)}
+  .side-block li .lvl{font-size:11px;color:var(--ink-3);letter-spacing:.06em;text-transform:uppercase}
 
-  .stats{
-    display:grid;grid-template-columns:repeat(3,1fr);gap:12px;
+  .stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .stat{background:var(--surface);border:1px solid var(--stroke);border-radius:14px;padding:22px;backdrop-filter:blur(12px);transition:all .25s var(--ease)}
+  .stat:hover{transform:translateY(-3px);border-color:rgba(34,211,238,.25)}
+  .stat .n{
+    font-size:clamp(28px,3vw,40px);font-weight:700;letter-spacing:-.05em;line-height:1;
+    background:linear-gradient(135deg,var(--cyan),var(--cyan-2));
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
   }
-  .stat{
-    background:var(--surface);border:1px solid var(--line);
-    border-radius:var(--radius);padding:20px;
-    transition:all .3s var(--ease);
-  }
-  .stat:hover{transform:translateY(-2px);box-shadow:var(--shadow-sm)}
-  .stat .num{font-size:32px;font-weight:600;letter-spacing:-.04em;line-height:1;color:var(--ink);margin-bottom:8px}
-  .stat .lbl{font-size:12px;color:var(--ink-3);font-weight:500}
-  @media(max-width:640px){.stats{grid-template-columns:1fr 1fr}}
+  .stat .l{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-top:8px}
 
-  .principles{
-    display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
-    margin-top:80px;
-  }
-  @media(max-width:900px){.principles{grid-template-columns:1fr;gap:14px;margin-top:56px}}
+  .principles{margin-top:100px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  @media(max-width:900px){.principles{grid-template-columns:1fr;gap:14px;margin-top:64px}}
   .principle{
-    background:var(--surface);border:1px solid var(--line);
-    border-radius:var(--radius);padding:28px;
+    background:var(--surface);border:1px solid var(--stroke);border-radius:16px;padding:28px;
+    backdrop-filter:blur(12px);transition:all .3s var(--ease);
     display:flex;flex-direction:column;gap:12px;
-    transition:all .3s var(--ease);
   }
-  .principle:hover{transform:translateY(-3px);box-shadow:var(--shadow-md)}
-  .principle .n{
-    font-family:var(--mono);font-size:12px;color:var(--ink-3);
-    letter-spacing:.04em;
-  }
-  .principle h3{font-size:18px}
-  .principle p{font-size:14px;line-height:1.6;color:var(--ink-2)}
+  .principle:hover{transform:translateY(-4px);border-color:rgba(34,211,238,.3);background:var(--surface-2)}
+  .principle .n{font-family:var(--mono);font-size:11px;color:var(--cyan);letter-spacing:.12em;font-weight:600}
+  .principle h3{font-size:19px}
+  .principle p{font-size:14px;line-height:1.65;color:var(--ink-2)}
 </style>
 </head>
 <body>
 
-<div id="pt" class="on"></div>
-
 <nav class="top">
   <div class="inner">
-    <a class="brand" href="index.html">
-      <span class="mark"></span>
-      <span>Arbin</span>
-    </a>
-    <ul class="desktop">
-      <li><a class="lnk" href="index.html">Home</a></li>
-      <li><a class="lnk" href="work.html">Work</a></li>
-      <li><a class="lnk" href="about.html">About</a></li>
-      <li><a class="lnk" href="contact.html">Contact</a></li>
+    <a class="brand" href="index.html"><span class="dot"></span><span data-brand>Arbin</span><span class="yr">/2026</span></a>
+    <ul>
+      <li><a class="lnk" href="index.html">home</a></li>
+      <li><a class="lnk" href="work.html">work</a></li>
+      <li><a class="lnk" href="about.html">about</a></li>
+      <li><a class="lnk" href="contact.html">contact</a></li>
     </ul>
     <button class="menu-btn" aria-label="Menu"><span></span></button>
   </div>
 </nav>
 <div class="mobile-menu">
-  <a href="index.html">Home</a>
-  <a href="work.html">Work</a>
-  <a href="about.html">About</a>
-  <a href="contact.html">Contact</a>
+  <a href="index.html"><span>Home</span><span class="arr">→</span></a>
+  <a href="work.html"><span>Work</span><span class="arr">→</span></a>
+  <a href="about.html"><span>About</span><span class="arr">→</span></a>
+  <a href="contact.html"><span>Contact</span><span class="arr">→</span></a>
 </div>
 
 <main>
@@ -106,7 +91,7 @@
     <div class="wrap">
       <div class="stack">
         <span class="eyebrow reveal">About</span>
-        <h1 class="reveal">A developer who ships.</h1>
+        <h1 class="reveal">A developer who <span class="grad">ships.</span></h1>
       </div>
 
       <div class="bio-grid">
@@ -118,31 +103,23 @@
 
         <div class="side">
           <div class="stats">
-            <div class="stat reveal">
-              <div class="num">3</div>
-              <div class="lbl">Live apps</div>
-            </div>
-            <div class="stat reveal">
-              <div class="num">∞</div>
-              <div class="lbl">Coffee</div>
-            </div>
-            <div class="stat reveal">
-              <div class="num">24h</div>
-              <div class="lbl">Reply time</div>
-            </div>
+            <div class="stat reveal"><span class="n" data-count="3">0</span><span class="l">Live apps</span></div>
+            <div class="stat reveal"><span class="n" data-count="24" data-suffix="h">0</span><span class="l">Reply time</span></div>
+            <div class="stat reveal"><span class="n" data-count="100" data-suffix="%">0</span><span class="l">End-to-end</span></div>
+            <div class="stat reveal"><span class="n" data-count="6" data-suffix="+">0</span><span class="l">Core stack</span></div>
           </div>
 
           <div class="side-block reveal" data-about-skills>
             <h4>Toolkit</h4>
             <ul>
-              <li><span>TypeScript</span><span>daily</span></li>
-              <li><span>React · Next.js</span><span>daily</span></li>
-              <li><span>Node.js</span><span>daily</span></li>
-              <li><span>Tailwind CSS</span><span>daily</span></li>
-              <li><span>Python</span><span>regular</span></li>
-              <li><span>Firebase</span><span>regular</span></li>
-              <li><span>Cloudflare</span><span>regular</span></li>
-              <li><span>AI · LLMs</span><span>exploring</span></li>
+              <li><span>TypeScript</span><span class="lvl">daily</span></li>
+              <li><span>React · Next.js</span><span class="lvl">daily</span></li>
+              <li><span>Node.js</span><span class="lvl">daily</span></li>
+              <li><span>Tailwind CSS</span><span class="lvl">daily</span></li>
+              <li><span>Python</span><span class="lvl">regular</span></li>
+              <li><span>Firebase</span><span class="lvl">regular</span></li>
+              <li><span>Cloudflare</span><span class="lvl">regular</span></li>
+              <li><span>AI · LLMs</span><span class="lvl">exploring</span></li>
             </ul>
           </div>
         </div>
@@ -168,31 +145,26 @@
     </div>
   </section>
 
-  <section class="section" style="padding-top:0">
-    <div class="wrap">
-      <div class="cta-band reveal">
-        <h2>Got something in mind? Let's build it.</h2>
-        <a class="btn" href="contact.html">Get in touch <span class="arr">→</span></a>
-      </div>
+  <section class="wrap">
+    <div class="cta-band reveal">
+      <h2>Got something in mind? <span class="grad">Let's build it.</span></h2>
+      <a class="btn primary" href="contact.html">Get in touch <span class="arr">→</span></a>
     </div>
   </section>
 </main>
 
 <footer>
   <div class="inner">
-    <span class="copy">© 2025 Arbin</span>
-    <div class="links">
-      <a href="index.html">Home</a>
-      <a href="work.html">Work</a>
-      <a href="contact.html">Contact</a>
-    </div>
+    <div class="col"><span class="sig" data-brand data-footer-sig>Arbin</span><span class="copy" data-footer-copy>© 2026</span></div>
+    <div class="links"><a href="index.html">Home</a><a href="work.html">Work</a><a href="contact.html">Contact</a></div>
   </div>
 </footer>
 
+<script type="module" src="./assets/js/anim.js"></script>
 <script type="module">
-  import "./assets/js/anim.js";
-  import { loadAbout } from "./assets/js/data.js";
-  loadAbout();
+  import { loadAbout, loadFooter } from "./assets/js/data.js";
+  loadAbout().catch(e => console.warn(e));
+  loadFooter().catch(e => console.warn(e));
 </script>
 </body>
 </html>

@@ -3,104 +3,85 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<meta name="theme-color" content="#f6f5f1" />
+<meta name="theme-color" content="#0a0b0f" />
 <title>Contact — Arbin</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/base.css">
 <style>
-  .page-head{padding:140px 0 0}
+  .page-head{padding:150px 0 0}
   @media(max-width:900px){.page-head{padding:110px 0 0}}
-  .page-head .stack{display:flex;flex-direction:column;gap:20px;align-items:flex-start;margin-bottom:64px}
-  .page-head h1{max-width:16ch}
+  .page-head .stack{display:flex;flex-direction:column;gap:22px;align-items:flex-start;margin-bottom:80px}
+  .page-head h1{max-width:15ch}
 
-  .contact-grid{
-    display:grid;grid-template-columns:1.3fr 1fr;gap:80px;align-items:start;
-  }
-  @media(max-width:900px){.contact-grid{grid-template-columns:1fr;gap:48px}}
+  .contact-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:90px;align-items:start;padding-top:56px;border-top:1px solid var(--stroke)}
+  @media(max-width:900px){.contact-grid{grid-template-columns:1fr;gap:48px;padding-top:36px}}
 
-  .mail-card{
-    display:block;padding:40px;background:var(--surface);
-    border:1px solid var(--line);border-radius:var(--radius);
-    transition:all .35s var(--ease);position:relative;overflow:hidden;
+  .mail-block .label{
+    font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--cyan);margin-bottom:22px;
+    display:flex;align-items:center;gap:10px;font-weight:600;
   }
-  .mail-card::before{
-    content:'';position:absolute;inset:0;
-    background:linear-gradient(120deg,transparent 40%,rgba(255,77,26,.06));
-    opacity:0;transition:opacity .4s;
+  .mail-block .label::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan-glow);animation:pulse 2s infinite}
+  .mail-block a{
+    display:inline-block;
+    font-size:clamp(24px,4.4vw,64px);
+    font-weight:700;letter-spacing:-.045em;line-height:1.05;
+    color:var(--ink);word-break:break-word;
+    padding-bottom:6px;position:relative;
+    transition:color .3s var(--ease);
   }
-  .mail-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);border-color:var(--accent)}
-  .mail-card:hover::before{opacity:1}
-  .mail-card .label{
-    font-family:var(--mono);font-size:12px;color:var(--ink-3);
-    letter-spacing:.08em;text-transform:uppercase;margin-bottom:16px;
-    display:flex;align-items:center;gap:8px;
+  .mail-block a::after{
+    content:'';position:absolute;left:0;right:0;bottom:0;height:2px;
+    background:linear-gradient(90deg,var(--cyan),var(--cyan-2));
+    transform-origin:left;transform:scaleX(1);
+    transition:transform .5s var(--ease);
   }
-  .mail-card .label::before{content:'';width:6px;height:6px;border-radius:50%;background:#16c47f}
-  .mail-card .addr{
-    font-size:clamp(22px,3vw,38px);font-weight:600;
-    letter-spacing:-.035em;line-height:1.1;color:var(--ink);
-    word-break:break-word;margin-bottom:12px;
-  }
-  .mail-card .hint{font-size:14px;color:var(--ink-2);display:flex;align-items:center;gap:8px}
-  .mail-card .hint .arr{transition:transform .3s var(--ease)}
-  .mail-card:hover .hint .arr{transform:translateX(4px);color:var(--accent)}
+  .mail-block a:hover{color:var(--cyan)}
+  .mail-block a:hover::after{transform:scaleX(0);transform-origin:right}
+  .mail-block .note{font-family:var(--mono);font-size:12px;color:var(--ink-3);margin-top:22px;letter-spacing:.02em}
 
-  .links-list{display:flex;flex-direction:column}
+  .links-list{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--stroke);border-radius:16px;padding:8px;backdrop-filter:blur(12px)}
   .links-list a{
     display:flex;justify-content:space-between;align-items:center;
-    padding:20px 0;border-bottom:1px solid var(--line);
-    font-size:16px;font-weight:500;color:var(--ink);
-    transition:padding .3s var(--ease),color .2s;
+    padding:16px 16px;border-radius:10px;
+    font-family:var(--mono);font-size:13px;color:var(--ink);
+    transition:background .2s,color .2s;letter-spacing:.02em;
   }
-  .links-list a:first-child{border-top:1px solid var(--line)}
-  .links-list a:hover{padding-left:8px;color:var(--accent)}
-  .links-list a .arr{
-    font-size:16px;color:var(--ink-3);
-    transition:all .3s var(--ease);
-  }
-  .links-list a:hover .arr{color:var(--accent);transform:translate(3px,-3px)}
+  .links-list a:hover{background:var(--cyan-dim);color:var(--cyan)}
+  .links-list a:hover .arr{color:var(--cyan);transform:translate(3px,-3px)}
+  .links-list a .arr{color:var(--ink-3);transition:all .25s var(--ease)}
 
-  .avail-card{
-    margin-top:32px;padding:24px;
-    background:var(--surface);border:1px solid var(--line);
-    border-radius:var(--radius);
-    display:flex;align-items:center;gap:14px;
+  .avail{
+    margin-top:20px;padding:20px;background:var(--surface);
+    border:1px solid var(--stroke);border-radius:16px;
+    display:flex;align-items:center;gap:14px;backdrop-filter:blur(12px);
   }
-  .avail-card .dot{
-    width:10px;height:10px;border-radius:50%;background:#16c47f;
-    box-shadow:0 0 0 4px rgba(22,196,127,.15);
-    animation:pulse 2s infinite;flex-shrink:0;
-  }
-  .avail-card .txt .t1{font-size:15px;font-weight:500;color:var(--ink)}
-  .avail-card .txt .t2{font-size:13px;color:var(--ink-3);margin-top:2px}
+  .avail .dot{width:10px;height:10px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px rgba(16,185,129,.16);animation:pulse 2s infinite;flex-shrink:0}
+  .avail .t1{font-size:15px;font-weight:600;letter-spacing:-.015em;color:var(--ink)}
+  .avail .t2{font-family:var(--mono);font-size:11px;color:var(--ink-3);letter-spacing:.04em;margin-top:3px;text-transform:uppercase}
 </style>
 </head>
 <body>
 
-<div id="pt" class="on"></div>
-
 <nav class="top">
   <div class="inner">
-    <a class="brand" href="index.html">
-      <span class="mark"></span>
-      <span>Arbin</span>
-    </a>
-    <ul class="desktop">
-      <li><a class="lnk" href="index.html">Home</a></li>
-      <li><a class="lnk" href="work.html">Work</a></li>
-      <li><a class="lnk" href="about.html">About</a></li>
-      <li><a class="lnk" href="contact.html">Contact</a></li>
+    <a class="brand" href="index.html"><span class="dot"></span><span data-brand>Arbin</span><span class="yr">/2026</span></a>
+    <ul>
+      <li><a class="lnk" href="index.html">home</a></li>
+      <li><a class="lnk" href="work.html">work</a></li>
+      <li><a class="lnk" href="about.html">about</a></li>
+      <li><a class="lnk" href="contact.html">contact</a></li>
     </ul>
     <button class="menu-btn" aria-label="Menu"><span></span></button>
   </div>
 </nav>
 <div class="mobile-menu">
-  <a href="index.html">Home</a>
-  <a href="work.html">Work</a>
-  <a href="about.html">About</a>
-  <a href="contact.html">Contact</a>
+  <a href="index.html"><span>Home</span><span class="arr">→</span></a>
+  <a href="work.html"><span>Work</span><span class="arr">→</span></a>
+  <a href="about.html"><span>About</span><span class="arr">→</span></a>
+  <a href="contact.html"><span>Contact</span><span class="arr">→</span></a>
 </div>
 
 <main>
@@ -108,38 +89,31 @@
     <div class="wrap">
       <div class="stack">
         <span class="eyebrow reveal">Contact</span>
-        <h1 class="reveal">Let's talk.</h1>
-        <p class="lede reveal">Hiring, contracting, or just want to compare notes — email is fastest, I reply within a day.</p>
+        <h1 class="reveal">Let's <span class="grad">talk.</span></h1>
+        <p class="lede reveal">Hiring, contracting, or comparing notes — email is fastest, I reply within a day.</p>
       </div>
 
       <div class="contact-grid">
-        <a class="mail-card reveal" data-contact-email href="mailto:hello@arbin.dev">
-          <div class="label">Email</div>
-          <div class="addr">hello@arbin.dev</div>
-          <div class="hint">Send a message <span class="arr">→</span></div>
-        </a>
+        <div class="mail-block reveal">
+          <div class="label">Email me</div>
+          <a data-contact-email href="mailto:hello@arbin.dev">hello@arbin.dev</a>
+          <div class="note">→ replies within 24h on weekdays</div>
+        </div>
 
         <div class="reveal">
           <div class="links-list">
-            <a data-contact-github href="#" target="_blank" rel="noopener">
-              <span>GitHub</span>
-              <span class="arr">↗</span>
-            </a>
-            <a data-contact-linkedin href="#" target="_blank" rel="noopener">
-              <span>LinkedIn</span>
-              <span class="arr">↗</span>
-            </a>
-            <a data-contact-resume href="#" target="_blank" rel="noopener">
-              <span>Resume</span>
-              <span class="arr">↗</span>
-            </a>
+            <a data-contact-github href="#" target="_blank" rel="noopener"><span>GitHub</span><span class="arr">↗</span></a>
+            <a data-contact-linkedin href="#" target="_blank" rel="noopener"><span>LinkedIn</span><span class="arr">↗</span></a>
+            <a data-contact-twitter href="#" target="_blank" rel="noopener"><span>Twitter / X</span><span class="arr">↗</span></a>
+            <a data-contact-instagram href="#" target="_blank" rel="noopener"><span>Instagram</span><span class="arr">↗</span></a>
+            <a data-contact-resume href="#" target="_blank" rel="noopener"><span>Resume</span><span class="arr">↗</span></a>
           </div>
 
-          <div class="avail-card">
+          <div class="avail">
             <span class="dot"></span>
-            <div class="txt">
+            <div>
               <div class="t1">Open to work</div>
-              <div class="t2">Senior roles · select freelance · 2025</div>
+              <div class="t2">Senior · freelance · 2026</div>
             </div>
           </div>
         </div>
@@ -150,19 +124,16 @@
 
 <footer>
   <div class="inner">
-    <span class="copy">© 2025 Arbin</span>
-    <div class="links">
-      <a href="index.html">Home</a>
-      <a href="work.html">Work</a>
-      <a href="about.html">About</a>
-    </div>
+    <div class="col"><span class="sig" data-brand data-footer-sig>Arbin</span><span class="copy" data-footer-copy>© 2026</span></div>
+    <div class="links"><a href="index.html">Home</a><a href="work.html">Work</a><a href="about.html">About</a></div>
   </div>
 </footer>
 
+<script type="module" src="./assets/js/anim.js"></script>
 <script type="module">
-  import "./assets/js/anim.js";
-  import { loadContact } from "./assets/js/data.js";
-  loadContact();
+  import { loadContact, loadFooter } from "./assets/js/data.js";
+  loadContact().catch(e => console.warn(e));
+  loadFooter().catch(e => console.warn(e));
 </script>
 </body>
 </html>

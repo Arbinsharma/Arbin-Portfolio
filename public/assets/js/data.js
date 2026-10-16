@@ -1,73 +1,131 @@
 import { db } from "./firebase-init.js";
 import { doc, getDoc, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-export async function getContent(key) {
-  const snap = await getDoc(doc(db, "content", key));
-  return snap.exists() ? snap.data() : null;
+async function getDocData(coll, id) {
+  try {
+    const snap = await getDoc(doc(db, coll, id));
+    return snap.exists() ? snap.data() : null;
+  } catch(e){ console.warn("firestore read:", coll + '/' + id, e.message); return null; }
 }
 
 export async function getProjects() {
-  const q = query(collection(db, "projects"), orderBy("order", "asc"));
-  const snap = await getDocs(q);
-  return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  try {
+    const snap = await getDocs(query(collection(db, "projects"), orderBy("order", "asc")));
+    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  } catch(e){ console.warn("firestore projects:", e.message); return []; }
+}
+
+async function applyTheme() {
+  try {
+    const d = await getDocData("settings", "theme");
+    if (!d) return;
+    const r = document.documentElement;
+    if (d.accent) r.style.setProperty('--cyan', d.accent);
+    if (d.brandName) document.querySelectorAll('[data-brand]').forEach(el => el.textContent = d.brandName);
+    if (d.metaTitle) document.title = d.metaTitle;
+  } catch(e){}
+}
+async function applySections() {
+  try {
+    const d = await getDocData("settings", "sections");
+    if (!d) return;
+    document.querySelectorAll('[data-section]').forEach(el => {
+      const k = el.dataset.section;
+      el.style.display = d[k] === false ? 'none' : '';
+    });
+  } catch(e){}
+}
+async function applyCustomCss() {
+  try {
+    const d = await getDocData("settings", "customcss");
+    if (!d || !d.css) return;
+    let tag = document.getElementById('custom-css');
+    if (!tag) { tag = document.createElement('style'); tag.id = 'custom-css'; document.head.appendChild(tag); }
+    tag.textContent = d.css;
+  } catch(e){}
 }
 
 export async function loadHero() {
-  const d = await getContent("hero");
+  await applyTheme();
+  const d = await getDocData("content", "hero");
   if (!d) return;
-  const set = (sel, val) => { const el = document.querySelector(sel); if (el && val != null) el.textContent = val; };
+  const set = (sel, v) => document.querySelectorAll(sel).forEach(el => { if (v != null && v !== '') el.textContent = v; });
   set("[data-hero-name]", d.name);
-  set("[data-hero-tagline]", d.tagline);
+  set("[data-hero-avail]", d.availability);
   set("[data-hero-lede]", d.lede);
-  set("[data-hero-availability]", d.availability);
+  set("[data-hero-role]", d.role);
+  set("[data-hero-stack]", d.stack);
+  if (d.photoUrl) document.querySelectorAll("[data-hero-photo]").forEach(img => img.src = d.photoUrl);
+}
+
+export async function loadHome() {
+  await applySections();
+  await applyCustomCss();
+  const d = await getDocData("content", "home");
+  if (!d) return;
+  const set = (sel, v) => document.querySelectorAll(sel).forEach(el => { if (v != null && v !== '') el.textContent = v; });
+  set("[data-home-work-eyebrow]", d.workEyebrow);
+  set("[data-home-work-heading]", d.workHeading);
+  set("[data-home-work-desc]", d.workDesc);
+  set("[data-home-about-big]", d.aboutBig);
+  set("[data-home-about-body]", d.aboutBody);
+  set("[data-home-cta]", d.ctaHeading);
 }
 
 export async function loadAbout() {
-  const d = await getContent("about");
+  await applyTheme();
+  await applyCustomCss();
+  const d = await getDocData("content", "about");
   if (!d) return;
-  const pWrap = document.querySelector("[data-about-paragraphs]");
-  if (pWrap && d.paragraphs?.length) {
-    pWrap.innerHTML = d.paragraphs.map(p => `<p class="reveal">${p}</p>`).join("");
-    pWrap.querySelectorAll(".reveal").forEach(el => {
-      new IntersectionObserver((es, o) => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); o.unobserve(e.target); } }), { threshold: 0.15 }).observe(el);
+  const pw = document.querySelector("[data-about-paragraphs]");
+  if (pw && d.paragraphs?.length) {
+    pw.innerHTML = d.paragraphs.map(p => `<p class="reveal">${p}</p>`).join("");
+    pw.querySelectorAll('.reveal').forEach(el => {
+      new IntersectionObserver((es, o) => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); o.unobserve(e.target); } }), { threshold: 0.15 }).observe(el);
     });
   }
-  const sWrap = document.querySelector("[data-about-skills]");
-  if (sWrap && d.skills?.length) {
-    sWrap.innerHTML = d.skills.map(s => `<span class="chip">${s}</span>`).join("");
-  }
+  const sw = document.querySelector("[data-about-skills]");
+  if (sw && d.skills?.length) sw.innerHTML = d.skills.map(s => `<li><span>${s}</span><span class="lvl">daily</span></li>`).join("");
 }
 
 export async function loadContact() {
-  const d = await getContent("contact");
+  await applyTheme();
+  await applyCustomCss();
+  const d = await getDocData("content", "contact");
   if (!d) return;
-  const mail = document.querySelector("[data-contact-email]");
-  if (mail && d.email) { mail.textContent = d.email; mail.href = `mailto:${d.email}`; }
-  const g = document.querySelector("[data-contact-github]"); if (g && d.github) g.href = d.github;
-  const l = document.querySelector("[data-contact-linkedin]"); if (l && d.linkedin) l.href = d.linkedin;
-  const r = document.querySelector("[data-contact-resume]"); if (r && d.resumeUrl) r.href = d.resumeUrl;
+  const m = document.querySelector("[data-contact-email]");
+  if (m && d.email) { m.textContent = d.email; m.href = `mailto:${d.email}`; }
+  const map = { github:"[data-contact-github]", linkedin:"[data-contact-linkedin]", twitter:"[data-contact-twitter]", instagram:"[data-contact-instagram]", resumeUrl:"[data-contact-resume]" };
+  for (const k of Object.keys(map)) {
+    const el = document.querySelector(map[k]);
+    if (el && d[k]) el.href = d[k];
+  }
 }
 
 export async function loadProjects(target) {
   const list = await getProjects();
   const wrap = document.querySelector(target);
-  if (!wrap) return;
-  if (!list.length) { wrap.innerHTML = `<p class="lede">no projects yet — add some in the admin panel.</p>`; return; }
+  if (!wrap || !list.length) return;
   wrap.innerHTML = list.map((p, i) => `
-    <article class="card reveal" style="transition-delay:${i * 80}ms">
-      ${p.imageUrl ? `<div style="aspect-ratio:16/9;border-radius:14px;overflow:hidden;margin-bottom:20px;background:#0a0d16"><img src="${p.imageUrl}" alt="${p.title}" loading="lazy" style="width:100%;height:100%;object-fit:cover"/></div>` : ""}
-      <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:14px">
-        <div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--a1);letter-spacing:.12em;margin-bottom:8px">${String(i+1).padStart(2,'0')}</div>
-          <h3>${p.title}</h3>
-        </div>
-        ${p.link ? `<a href="${p.link}" target="_blank" rel="noopener" style="color:var(--dim);font-size:18px;transition:color .2s" onmouseover="this.style.color='var(--a1)'" onmouseout="this.style.color='var(--dim)'">↗</a>` : ""}
-      </div>
-      <p style="color:var(--dim);font-size:14px;line-height:1.65;margin-bottom:18px">${p.description || ""}</p>
-      ${p.tags?.length ? `<div style="display:flex;gap:8px;flex-wrap:wrap">${p.tags.map(t => `<span class="chip">${t}</span>`).join("")}</div>` : ""}
-    </article>
+    <a class="proj-row reveal" href="${p.link || '#'}" target="_blank" rel="noopener">
+      <span class="pr-num">${String(i+1).padStart(2,'0')}</span>
+      <span class="pr-main">
+        <span class="pr-name">${p.title || ''}</span>
+        <span class="pr-desc">${p.description || ''}</span>
+      </span>
+      <span class="pr-tags">${(p.tags||[]).map(t => `<span>${t}</span>`).join('')}</span>
+      <span class="pr-year">${p.year||''}</span>
+      <span class="pr-arrow">↗</span>
+    </a>
   `).join("");
-  wrap.querySelectorAll(".reveal").forEach(el => {
-    new IntersectionObserver((es, o) => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); o.unobserve(e.target); } }), { threshold: 0.1 }).observe(el);
+  wrap.querySelectorAll('.reveal').forEach(el => {
+    new IntersectionObserver((es, o) => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); o.unobserve(e.target); } }), { threshold: 0.1 }).observe(el);
   });
+}
+
+export async function loadFooter() {
+  const d = await getDocData("content", "footer");
+  if (!d) return;
+  document.querySelectorAll("[data-footer-sig]").forEach(el => { if (d.signature) el.textContent = d.signature; });
+  document.querySelectorAll("[data-footer-copy]").forEach(el => { if (d.copy) el.textContent = d.copy; });
 }
